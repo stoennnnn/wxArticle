@@ -1,0 +1,11 @@
+server:
+  port: 9900
+#配置数据库
+spring:
+  datasource:
+    jdbc.drive: com.mysql.cj.jdbc.Driver
+    username: root
+    password: qaz123456
+    url: jdbc:mysql://localhost:3306/wxarticle?characterEncoding=utf-8&serverTimezone=UTC&useSSL=false
+  jpa:
+      show-sql: true
