@@ -11,7 +11,7 @@ import java.sql.Date;
 
 /**
  * 文章信息实体类
- * Created by 26725 on 2019/2/11.
+ * Created by 26725 on 2019/2/11
  */
 @Entity
 @Data
