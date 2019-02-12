@@ -1,6 +1,6 @@
 package com.zql.crawler;
 
-import com.zql.dto.AppMsgExtInfo;
+import com.zql.dto.ElementDto;
 import com.zql.utils.JsonUtil;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -25,8 +25,10 @@ public class WeChatPublic {
         //截取前10条推送信息的json中的list数据
         String content = doc.html().split("var msgList = ")[1].split("seajs.use")[0].trim();
         String contentJson = content.substring(0, content.lastIndexOf(";"));
+        String s1 = contentJson.substring(8);
+        String s2 = s1.substring(0,s1.lastIndexOf("}"));
         //json转list
-        List<AppMsgExtInfo> appMsgExtInfoList = JsonUtil.toList(contentJson);
+        List<ElementDto> elementDtos = JsonUtil.toList(s2);
         //截取出来第一条信息的url
         String url = contentJson.split("content_url\":\"")[1].split("\",\"copyright_stat")[0].replaceAll("amp;", "");
         if(url.startsWith("/s")){//如果url以/s开头，处理成http格式

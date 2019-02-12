@@ -2,10 +2,10 @@ package com.zql.utils;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.zql.dto.AppMsgExtInfo;
-import com.zql.dto.ResultBean;
+import com.zql.dto.ElementDto;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -23,10 +23,11 @@ public class JsonUtil {
 
     /**
      * json转List
+     *
      * @param str
      * @return
      */
-    public static List<AppMsgExtInfo> toList(String str) {
+    public static List<ElementDto> toList(String str) {
 //        //先转JsonObject
 //        JsonObject jsonObject = new JsonParser().parse(str).getAsJsonObject();
 //        Gson gson = new Gson();
@@ -39,11 +40,16 @@ public class JsonUtil {
 //            AppMsgExtInfo appMsgExtInfo = gson.fromJson(AppMsgExtInfo, new TypeToken<AppMsgExtInfo>() {}.getType());
 //            appMsgExtInfoList.add(appMsgExtInfo);
 //        }
-
-        //GSON直接解析成对象
-        ResultBean resultBean = new Gson().fromJson(str,ResultBean.class);
-        //对象中拿到集合
-        List<AppMsgExtInfo> appMsgExtInfoList = resultBean.getList();
-        return appMsgExtInfoList;
+//        Gson gson = new Gson();
+//        //GSON直接解析成对象
+//        ResultBean resultBean =gson.fromJson(str,ResultBean.class);
+//        //对象中拿到集合
+//        List<ElementDto> elementDtos = resultBean.getElementDtos();
+//        return elementDtos;
+        ElementDto[] array = new Gson().fromJson(str,ElementDto[].class);
+        List<ElementDto> elementDtos1 = Arrays.asList(array);
+//        List<ElementDto> elementDtos = new ArrayList<ElementDto>();
+//            elementDtos = gson.fromJson(str, new TypeToken<List<ElementDto>>() {}.getType());
+        return elementDtos1;
     }
 }
