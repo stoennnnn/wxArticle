@@ -11,4 +11,6 @@ spring:
       show-sql: true
 
 public:
-  accountNumber: javastack
+  account: javastack
+  #搜狗微信的基础地址
+  baseUrl: http://weixin.sogou.com/weixin?type=1&ie=utf8&query=

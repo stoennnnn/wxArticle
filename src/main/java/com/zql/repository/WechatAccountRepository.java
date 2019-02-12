@@ -12,5 +12,4 @@ import java.util.List;
 public interface WechatAccountRepository  extends JpaRepository<WechatAccount,Integer>{
      List<WechatAccount> findByAccountNickname(String accountNickname);
      List<WechatAccount> findByAccountNumber(String ccountNumber);
-
 }
