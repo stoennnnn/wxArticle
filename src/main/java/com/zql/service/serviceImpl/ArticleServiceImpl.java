@@ -44,6 +44,7 @@ public class ArticleServiceImpl implements ArticleService{
         ElementDto elementDto = resultDto.getElementDtos().get(0);
         //先判断文章是否更新
         List<WechatArticle> articles = articleRepository.findByAccountId(accountId);
+        //第一次保存公众号文章
         if (!Optional.ofNullable(articles).isPresent()){
             //标题
             String title = elementDto.getAppMsgExtInfo().title;
