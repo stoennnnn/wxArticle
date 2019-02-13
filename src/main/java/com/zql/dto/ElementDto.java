@@ -19,72 +19,72 @@ public class ElementDto {
 
     public static class AppMsgExtInfo{
         @SerializedName("audio_fileid")
-        private Integer audioFileid;
-        @SerializedName("author")
+        public Integer audioFileid;
         public String author;
-        private String content;
+        public String content;
         @SerializedName("content_url")
-        private String contentUrl;
+        public String contentUrl;
         @SerializedName("copyright_stat")
-        private Integer copyrightStat;
-        private String cover;
+        public Integer copyrightStat;
+        public String cover;
         @SerializedName("del_flag")
-        private Integer delFlag;
-        private String digest;
-        private Integer duration;
-        private Integer fileid;
+        public Integer delFlag;
+        public String digest;
+        public Integer duration;
+        public Long fileid;
         @SerializedName("is_multi")
-        private Integer isMulti;
+        public Integer isMulti;
         @SerializedName("item_show_type")
-        private Integer itemShowType;
+        public Integer itemShowType;
         @SerializedName("malicious_content_type")
-        private Integer maliciousContentType;
+        public Integer maliciousContentType;
         @SerializedName("malicious_title_reason_id")
-        private Integer maliciousTitleReasonId;
+        public Integer maliciousTitleReasonId;
         @SerializedName("multi_app_msg_item_list")
         public List<MultiAppMsgItemInfo> multiAppMsgItemList;
         @SerializedName("play_url")
-        private String playUrl;
+        public String playUrl;
         @SerializedName("source_url")
-        private String sourceUrl;
-        private Integer subtype;
-        private String  title;
+        public String sourceUrl;
+        public Integer subtype;
+        public String  title;
 
         public static class MultiAppMsgItemInfo{
             @SerializedName("audio_fileid")
-            private Integer audioFileid;
-            private String author;
-            private String content;
+            public Integer audioFileid;
+            public String author;
+            public String content;
             @SerializedName("content_url")
-            private String contentUrl;
+            public String contentUrl;
             @SerializedName("copyright_stat")
-            private Integer copyrightStat;
-            private String cover;
+            public Integer copyrightStat;
+            public String cover;
             @SerializedName("del_flag")
-            private Integer delFlag;
-            private String digest;
-            private Integer duration;
-            private Integer fileid;
+            public Integer delFlag;
+            public String digest;
+            public Integer duration;
+            public Long fileid;
             @SerializedName("item_show_type")
-            private Integer itemShowType;
+            public Integer itemShowType;
             @SerializedName("malicious_content_type")
-            private Integer maliciousContentType;
+            public Integer maliciousContentType;
             @SerializedName("malicious_title_reason_id")
-            private Integer maliciousTitleReasonId;
+            public Integer maliciousTitleReasonId;
             @SerializedName("play_url")
-            private String playUrl;
+            public String playUrl;
             @SerializedName("source_url")
-            private String sourceUrl;
-            private String  title;
+            public String sourceUrl;
+            public String  title;
 
         }
     }
     public static class CommMsgInfo{
-        private String content;
-        private Integer datetime;
-        private Integer id;
-        private Integer status;
-        private Integer type;
+        public String content;
+        public Long datetime;
+        public Long fakeid;
+        public Long id;
+        public Integer status;
+        public Integer type;
     }
 
 }

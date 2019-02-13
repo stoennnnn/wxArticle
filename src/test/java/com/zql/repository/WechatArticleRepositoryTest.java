@@ -1,6 +1,7 @@
 package com.zql.repository;
 
 import com.zql.dataobject.WechatArticle;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.sql.Date;
+import java.util.List;
 
 /**
  * Created by 26725 on 2019/2/11.
@@ -28,6 +30,12 @@ public class WechatArticleRepositoryTest {
         wechatArticle.setArticleTitle("我们都来学java");
         wechatArticle.setArticleDatetime(date);
         repository.save(wechatArticle);
+    }
+
+    @Test
+    public  void findByAccountId(){
+        List<WechatArticle> list = repository.findByAccountId(1);
+        Assert.assertNotNull(list);
     }
 
 }
