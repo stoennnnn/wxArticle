@@ -6,7 +6,6 @@ import com.zql.dto.ResultDto;
 import com.zql.repository.WechatAccountRepository;
 import com.zql.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,14 +19,12 @@ public class AccountServiceImpl implements AccountService {
     private WeChatPublicCrawler crawler;
     @Autowired
     private WechatAccountRepository accountRepository;
-    @Value("${public.account}")
-    private String account;
     /**
      * 保存公众号信息
      * @return
      */
     @Override
-    public ResultDto saveAccountInfo() {
+    public ResultDto saveAccountInfo(String account) {
         List<WechatAccount> list = accountRepository.findByAccountNumber(account);
         ResultDto resultDto = crawler.getFirst(account);
         if (list.isEmpty()){

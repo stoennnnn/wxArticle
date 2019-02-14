@@ -4,6 +4,7 @@ import com.zql.dataobject.WechatArticle;
 import lombok.Data;
 import lombok.ToString;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,7 +20,5 @@ public class ArticleInfoDto {
     //公众号描述
     private String accountDesc;
     //文章信息
-    private List<WechatArticle> articles;
-
-
+    private List<WechatArticle> articles =new ArrayList<WechatArticle>() ;
 }

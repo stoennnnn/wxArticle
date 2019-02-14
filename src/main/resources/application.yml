@@ -1,5 +1,5 @@
 server:
-  port: 9900
+  port: 8888
 #配置数据库
 spring:
   datasource:
@@ -38,6 +38,11 @@ spring:
 
 #公众号相关配置
 public:
-  account: javastack,a123,c123
+  account: javastack
   #搜狗微信的基础地址
   baseUrl: http://weixin.sogou.com/weixin?type=1&ie=utf8&query=
+#邮件内容的相关配置
+mail:
+  from: 2672575920@qq.com
+  to: 2672575920@qq.com
+  subject: 今日更新文章

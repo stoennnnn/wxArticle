@@ -1,8 +1,12 @@
 package com.zql.mq;
 
-import org.springframework.beans.factory.annotation.Value;
+import com.zql.dto.ArticleInfoDto;
+import com.zql.mail.SendMail;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 /**
  * 创建消费者，通过消费者监听并发送邮件
@@ -10,8 +14,11 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class Consumer {
-    @JmsListener(destination="queue_article")
-    public void receiveInfo(){
-
+    @Autowired
+    private SendMail sendMail;
+    @JmsListener(destination="articleQueue")
+    public void receiveInfo( List<ArticleInfoDto> list ){
+        //发邮件
+        sendMail.send(list);
     }
 }

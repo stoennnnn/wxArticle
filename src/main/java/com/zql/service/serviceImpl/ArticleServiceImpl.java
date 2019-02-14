@@ -13,6 +13,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,6 +22,7 @@ import java.util.Optional;
  */
 @Service
 @Slf4j
+@Transactional
 public class ArticleServiceImpl implements ArticleService {
 
     @Autowired
@@ -31,34 +33,35 @@ public class ArticleServiceImpl implements ArticleService {
     private WechatArticleRepository articleRepository;
 
     @Override
-    public String saveLastArticleInfo() {
-        ResultDto resultDto = accountServiceImpl.saveAccountInfo();
+    public ArticleInfoDto saveLastArticleInfo(String account ) {
+        ResultDto resultDto = accountServiceImpl.saveAccountInfo(account);
         //需要插入队列的articleInfoDto
         ArticleInfoDto articleInfoDto = new ArticleInfoDto();
         BeanUtils.copyProperties(resultDto, articleInfoDto);
         if (!Optional.ofNullable(resultDto).isPresent()) {
             log.error("resultDto不存在");
-            return "false";
+            return new ArticleInfoDto();
         }
-        //获取该公众号已信息
+        //获取accountId
         List<WechatAccount> list = accountRepository.findByAccountNumber(resultDto.getAccount());
         if (!Optional.ofNullable(list).isPresent()) {
             log.error("没有查询到公众号");
-            return "false";
+            return new ArticleInfoDto();
         }
         Integer accountId = list.get(0).getAccountId();
         WechatArticle article = new WechatArticle();
+        //外层数据先存入accountId
         article.setAccountId(accountId);
         //取最新的一篇文章
         ElementDto elementDto = resultDto.getElementDtos().get(0);
-        //先判断之前是否保存过文章
+        //先判断之前是否保存过该公众号文章
         List<WechatArticle> articles = articleRepository.findByAccountId(accountId);
         //第一次保存公众号文章
         if (articles.isEmpty()) {
             saveOneArticle(article, elementDto,articleInfoDto);
             //如果一天发了多篇文章
             if (!elementDto.getAppMsgExtInfo().multiAppMsgItemList.isEmpty()) {
-                saveMultiArticle(elementDto, articleInfoDto);
+                saveMultiArticle(elementDto, articleInfoDto, accountId);
             }
         } else {
             Long timeLong = articles.get(0).getArticleDatetime();
@@ -68,14 +71,14 @@ public class ArticleServiceImpl implements ArticleService {
                 saveOneArticle(article, elementDto,articleInfoDto);
                 //如果一天发了多篇
                 if (!elementDto.getAppMsgExtInfo().multiAppMsgItemList.isEmpty()) {
-                    saveMultiArticle(elementDto,articleInfoDto);
+                    saveMultiArticle(elementDto,articleInfoDto,accountId);
                 }
             }else {
-                log.debug("文章还没更新");
-                return "false";
+                log.error("文章还没更新");
+                return new ArticleInfoDto();
             }
         }
-        return "true";
+        return articleInfoDto;
     }
 
     /**
@@ -84,6 +87,7 @@ public class ArticleServiceImpl implements ArticleService {
      * @param article
      * @param elementDto
      */
+    @Transactional
     public void saveOneArticle(WechatArticle article, ElementDto elementDto,ArticleInfoDto articleInfoDto) {
         //标题，文章链接，描述，封面，更新时间
         String title = elementDto.getAppMsgExtInfo().title;
@@ -99,20 +103,28 @@ public class ArticleServiceImpl implements ArticleService {
         //datetime以long保存
         article.setArticleDatetime(datetime);
         articleRepository.save(article);
-        //顺便插入articleInfoDto
-        List<WechatArticle> articles = articleInfoDto.getArticles();
-        articles.add(article);
+        //同时插入articleInfoDto
+        articleInfoDto.getArticles().add(article);
     }
 
     /**
      * 一天发多篇文章的情况的保存
      * @param elementDto
      */
-    public void saveMultiArticle(ElementDto elementDto,ArticleInfoDto articleInfoDto){
+    @Transactional
+    public void saveMultiArticle(ElementDto elementDto,ArticleInfoDto articleInfoDto,Integer accountId){
         List<ElementDto.AppMsgExtInfo.MultiAppMsgItemInfo> multiAppMsgItemList = elementDto.getAppMsgExtInfo().multiAppMsgItemList;
         for (int i = 0; i < multiAppMsgItemList.size(); i++) {
             WechatArticle article2 = new WechatArticle();
-            saveOneArticle(article2, elementDto,articleInfoDto);
+            article2.setArticleTitle(multiAppMsgItemList.get(i).title);
+            article2.setArticleContentUrl(multiAppMsgItemList.get(i).contentUrl);
+            article2.setArticleDigest(multiAppMsgItemList.get(i).digest);
+            article2.setArticleCoverUrl(multiAppMsgItemList.get(i).cover);
+            article2.setArticleDatetime(elementDto.getCommMsgInfo().datetime);
+            article2.setAccountId(accountId);
+            articleRepository.save(article2);
+            //同时插入articleInfoDto
+            articleInfoDto.getArticles().add(article2);
         }
     }
 }

@@ -1,6 +1,5 @@
 package com.zql.service;
 
-import com.zql.dataobject.WechatAccount;
 import com.zql.dto.ResultDto;
 
 /**
@@ -12,5 +11,5 @@ public interface AccountService {
      * 保存公众号信息
      * @return
      */
-    ResultDto saveAccountInfo();
+    ResultDto saveAccountInfo(String account);
 }
