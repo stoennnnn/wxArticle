@@ -19,6 +19,7 @@ public class Consumer {
     @JmsListener(destination="articleQueue")
     public void receiveInfo( List<ArticleInfoDto> list ){
         //发邮件
+        System.out.println(list.toString());
         sendMail.send(list);
     }
 }

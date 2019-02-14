@@ -11,6 +11,7 @@ import com.zql.service.ArticleService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -31,7 +32,8 @@ public class ArticleServiceImpl implements ArticleService {
     private WechatAccountRepository accountRepository;
     @Autowired
     private WechatArticleRepository articleRepository;
-
+    @Value("${public.urlHead}")
+    private String urlHead;
     @Override
     public ArticleInfoDto saveLastArticleInfo(String account ) {
         ResultDto resultDto = accountServiceImpl.saveAccountInfo(account);
@@ -91,13 +93,16 @@ public class ArticleServiceImpl implements ArticleService {
     public void saveOneArticle(WechatArticle article, ElementDto elementDto,ArticleInfoDto articleInfoDto) {
         //标题，文章链接，描述，封面，更新时间
         String title = elementDto.getAppMsgExtInfo().title;
-        String contentUrl = elementDto.getAppMsgExtInfo().contentUrl;
+        //需要处理contentUrl
+        String contentUrl = elementDto.getAppMsgExtInfo().contentUrl.replaceAll("amp;","");
+        System.out.println(urlHead+contentUrl);
         String digest = elementDto.getAppMsgExtInfo().digest;
         String cover = elementDto.getAppMsgExtInfo().cover;
         //datetime格式为long
         Long datetime = elementDto.getCommMsgInfo().datetime;
         article.setArticleTitle(title);
-        article.setArticleContentUrl(contentUrl);
+
+        article.setArticleContentUrl(urlHead+contentUrl);
         article.setArticleDigest(digest);
         article.setArticleCoverUrl(cover);
         //datetime以long保存
@@ -117,7 +122,8 @@ public class ArticleServiceImpl implements ArticleService {
         for (int i = 0; i < multiAppMsgItemList.size(); i++) {
             WechatArticle article2 = new WechatArticle();
             article2.setArticleTitle(multiAppMsgItemList.get(i).title);
-            article2.setArticleContentUrl(multiAppMsgItemList.get(i).contentUrl);
+            //contentUrl需要处理
+            article2.setArticleContentUrl(urlHead+multiAppMsgItemList.get(i).contentUrl.replaceAll("amp;",""));
             article2.setArticleDigest(multiAppMsgItemList.get(i).digest);
             article2.setArticleCoverUrl(multiAppMsgItemList.get(i).cover);
             article2.setArticleDatetime(elementDto.getCommMsgInfo().datetime);

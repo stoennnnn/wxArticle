@@ -41,6 +41,8 @@ public:
   account: javastack
   #搜狗微信的基础地址
   baseUrl: http://weixin.sogou.com/weixin?type=1&ie=utf8&query=
+  #文章地址的地址头
+  urlHead: https://mp.weixin.qq.com
 #邮件内容的相关配置
 mail:
   from: 2672575920@qq.com
