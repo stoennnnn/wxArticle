@@ -9,8 +9,35 @@ spring:
     url: jdbc:mysql://localhost:3306/wxarticle?characterEncoding=utf-8&serverTimezone=UTC&useSSL=false
   jpa:
       show-sql: true
+#发送邮件的配置
+  mail:
+    host: smtp.qq.com
+    username: 2672575920@qq.com
+    #授权码，不是密码，从邮箱方面找
+    password: mufpzgezqssvdibc
+    properties:
+      mail:
+        stmp:
+          enable: true
+#        starttls:
+#          enable: true
+#          required: true
 
+#activemq配置,这里配置一定不要有空格，否则会出现jsTemplate无法注入的报错
+  activemq:
+    broker-url: tcp://127.0.0.1:61616
+    # 默认代理URL是否应该在内存中。如果指定了显式代理，则忽略此值。
+    in-memory: true
+    pool:
+      enabled: false
+    user: admin
+    password: admin
+  #默认情况下activemq提供的是queue模式，若要使用topic模式需要配置下面配置
+  jms:
+    pub-sub-domain: false
+
+#公众号相关配置
 public:
-  account: javastack
+  account: javastack,a123,c123
   #搜狗微信的基础地址
   baseUrl: http://weixin.sogou.com/weixin?type=1&ie=utf8&query=

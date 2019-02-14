@@ -22,13 +22,13 @@ public class WechatArticleRepositoryTest {
     @Test
     public void  save(){
         WechatArticle wechatArticle = new WechatArticle();
-        Date date = new Date(1549769380);
+       // Date date = new Date(1549769380);
         wechatArticle.setAccountId(1);
         wechatArticle.setArticleContentUrl("www.baidu.com");
         wechatArticle.setArticleCoverUrl("www.baidu.com");
         wechatArticle.setArticleDigest("java学习公众号");
         wechatArticle.setArticleTitle("我们都来学java");
-        wechatArticle.setArticleDatetime(date);
+        wechatArticle.setArticleDatetime(12L);
         repository.save(wechatArticle);
     }
 

@@ -18,8 +18,9 @@ public class DateUtil {
         SimpleDateFormat sdf = new SimpleDateFormat();
         Date date = new Date(data);
         String format = sdf.format(date);
+        return  format;
     }
-    public static Long Date2Long(Date date){
+    public static Long Date2Long(String date) throws ParseException {
         SimpleDateFormat sdf = new SimpleDateFormat();
         long timeLong = sdf.parse(date).getTime();
         return timeLong;

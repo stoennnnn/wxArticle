@@ -18,7 +18,7 @@ public class DateUtilTest {
     public void long2Date() throws Exception {
         //1549878282
         //2019-02-11 17:44:42
-        Date date = DateUtil.Long2Date("yyyy-MM-dd HH:mm:ss",  1549878282000L);
+    //    Date date = DateUtil.Long2Date("yyyy-MM-dd HH:mm:ss",  1549878282000L);
     }
 
     @Test
