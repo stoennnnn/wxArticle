@@ -3,6 +3,7 @@ package com.zql.controller;
 import com.zql.dto.ArticleInfoDto;
 import com.zql.mq.Producer;
 import com.zql.service.serviceImpl.ArticleServiceImpl;
+import com.zql.utils.JsonUtil;
 import org.apache.activemq.command.ActiveMQQueue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,6 +27,7 @@ public class ArticleController {
     //公众号集合
     @Value("${public.account}")
     private List<String> accounts;
+
     public void articleInfo(){
         List<ArticleInfoDto> list = new ArrayList<ArticleInfoDto>();
         for (String account : accounts) {
@@ -37,7 +39,9 @@ public class ArticleController {
         //list不为空则添加到队列
         if(!list.isEmpty()){
             Destination destination = new ActiveMQQueue("articleQueue");
-            producer.sendMessage(destination,list.toString());
+            //先把list转为json
+            final String str = JsonUtil.toJson(list);
+            producer.sendMessage(destination,str);
         }
     }
 }

@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -55,7 +54,7 @@ public class WeChatPublicCrawler {
         content = content.substring(8);
         content = content.substring(0,content.lastIndexOf("}"));
         //json转list，截取前10条推送信息
-        List<ElementDto> elementDtos = JsonUtil.toList(content);
+        List<ElementDto> elementDtos = JsonUtil.toListElementDto(content);
         if(!Optional.ofNullable(elementDtos).isPresent()){
             return new ResultDto();
         }

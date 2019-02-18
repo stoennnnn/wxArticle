@@ -22,6 +22,13 @@ spring:
 #        starttls:
 #          enable: true
 #          required: true
+  #freemarker配置
+  freemarker:
+    template-loader-path: classpath:/templates/
+    suffix: .ftl
+    cache: false
+    charset: utf-8
+    request-context-attribute: request
 
 #activemq配置,这里配置一定不要有空格，否则会出现jsTemplate无法注入的报错
   activemq:

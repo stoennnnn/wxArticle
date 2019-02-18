@@ -3,6 +3,8 @@ package com.zql.utils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import com.zql.dto.ArticleInfoBean;
+import com.zql.dto.ArticleInfoDto;
 import com.zql.dto.ElementDto;
 import lombok.extern.slf4j.Slf4j;
 
@@ -24,33 +26,29 @@ public class JsonUtil {
     }
 
     /**
-     * json转List
+     * json转ListElementDto
      *
      * @param str
      * @return
      */
-    public static List<ElementDto> toList(String str) {
-//        //先转JsonObject
-//        JsonObject jsonObject = new JsonParser().parse(str).getAsJsonObject();
-//        Gson gson = new Gson();
-//        ArrayList<AppMsgExtInfo> appMsgExtInfoList = new ArrayList<>();
-//        //再转JsonArray 加上数据头
-//        JsonArray jsonArray = jsonObject.getAsJsonArray("list");
-////        //循环遍历
-//        for (JsonElement AppMsgExtInfo : jsonArray) {
-//            //通过反射 得到UserBean.class
-//            AppMsgExtInfo appMsgExtInfo = gson.fromJson(AppMsgExtInfo, new TypeToken<AppMsgExtInfo>() {}.getType());
-//            appMsgExtInfoList.add(appMsgExtInfo);
-//        }
-//        //GSON直接解析成对象
-//        ResultBean resultBean =gson.fromJson(str,ResultBean.class);
-//        //对象中拿到集合
-//        List<ElementDto> elementDtos = resultBean.getElementDtos();
-//        return elementDtos;
+    public static List<ElementDto> toListElementDto(String str) {
         Gson gson = new Gson();
-        List<ElementDto> elementDtos = new ArrayList<ElementDto>();
+        List<ElementDto> elementDtos = new ArrayList<>();
         Type type = new TypeToken<List<ElementDto>>() {}.getType();
         elementDtos= gson.fromJson(str, type);
         return elementDtos;
+    }
+
+    /**
+     * json转ArticleInfoBean
+     * @param str
+     * @return
+     */
+    public static List<ArticleInfoBean> toArticleInfoBeans (String str){
+        Gson gson = new Gson();
+        List<ArticleInfoBean> toArticleInfoBeans = new ArrayList<>();
+        Type type = new TypeToken<List<ArticleInfoBean>>() {}.getType();
+        toArticleInfoBeans= gson.fromJson(str, type);
+        return toArticleInfoBeans;
     }
 }

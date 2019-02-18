@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 用于数据传输
  * Created by 26725 on 2019/2/14.
  */
 @Data
@@ -20,5 +21,5 @@ public class ArticleInfoDto {
     //公众号描述
     private String accountDesc;
     //文章信息
-    private List<WechatArticle> articles =new ArrayList<WechatArticle>() ;
+    private List<WechatArticle> articles = new ArrayList<WechatArticle>();
 }
