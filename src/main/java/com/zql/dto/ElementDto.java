@@ -19,7 +19,7 @@ public class ElementDto {
 
     public static class AppMsgExtInfo{
         @SerializedName("audio_fileid")
-        public Integer audioFileid;
+        public Long audioFileid;
         public String author;
         public String content;
         @SerializedName("content_url")

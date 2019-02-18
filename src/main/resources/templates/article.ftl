@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>消息通知</title>
+    <title>今日文章更新</title>
 </head>
 
 <style type="text/css">
@@ -26,28 +26,30 @@
         background-color: #24A9E1;
         color: #ffffff;
     }
+    td{
+        background-color: #F5F5DC;
+    }
 </style>
 <body>
 <div>
-    <h2>邮件消息通知</h2>
+    <h2>最新文章！！！</h2>
     <table id="customers">
         <tr>
             <th>公众号</th>
             <th>名称</th>
             <th>描述</th>
-            <th>链接</th>
         </tr>
-        <#list params as articleInfoDto>
-          <#list articleInfoDto.articles as article>
-              <#assign a>${articleInfoDto.articles}</#assign>
+    <#list params as articleInfoDto>
+        <#if (articleInfoDto.articles)?exists>
             <tr>
-                <td>${(articleInfoDto.nickname)!""}</td>
-                <td>${(a.articleTitle)!""}</td>
-                <td>${(a.articleDigest)!""}</td>
-                <td>${(a.articleContentUrl)!""}</td>
+                    <td rowspan=${(articleInfoDto.articles)?size}>${(articleInfoDto.nickname)!""}</td>
+            <#list articleInfoDto.articles as article>
+                    <td  color="blue"><a href=${(article.articleContentUrl)!""}>${(article.articleTitle)!""}</a></td>
+                    <td>${(article.articleDigest)!""}</td>
             </tr>
             </#list>
-        </#list>
+        </#if>
+    </#list>
     </table>
 </div>
 </body>

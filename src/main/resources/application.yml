@@ -45,7 +45,7 @@ spring:
 
 #公众号相关配置
 public:
-  account: javastack
+  account: javatuanzhang,javastack,hi-arch,keeppuresmile,coderising,cn-linux,VTtalk,chengduitjob,vipmeiwen,hey-stone-money,ytdfz8,lidayushu
   #搜狗微信的基础地址
   baseUrl: http://weixin.sogou.com/weixin?type=1&ie=utf8&query=
   #文章地址的地址头

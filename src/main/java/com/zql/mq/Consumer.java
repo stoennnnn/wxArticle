@@ -1,8 +1,6 @@
 package com.zql.mq;
 
-import com.zql.dto.ArticleInfoBean;
 import com.zql.dto.ArticleInfoDto;
-import com.zql.dto.ElementDto;
 import com.zql.mail.SendMail;
 import com.zql.utils.JsonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +23,7 @@ public class Consumer {
 
     public void receiveInfo( String str) throws MessagingException {
         // 先把json再次转为lsit
-        List<ArticleInfoBean> list = JsonUtil.toArticleInfoBeans(str);
+        List<ArticleInfoDto> list = JsonUtil.toArticleInfoBeans(str);
         //发邮件
         sendMail.send(list,"article.ftl");
         System.out.println(list.toString());

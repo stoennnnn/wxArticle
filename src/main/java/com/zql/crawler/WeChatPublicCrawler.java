@@ -3,6 +3,7 @@ package com.zql.crawler;
 import com.zql.dto.ElementDto;
 import com.zql.dto.ResultDto;
 import com.zql.utils.JsonUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Component
+@Slf4j
 public class WeChatPublicCrawler {
 
     @Value("${public.baseUrl}")
@@ -32,14 +34,19 @@ public class WeChatPublicCrawler {
         Document document = getDocument(searchUrl);
         //查询到所有列表信息的url
         String listUrl = document.select(".tit a").attr("href");
+        if (listUrl.isEmpty()){
+            log.error("【没有搜索到公众号listUrl】查看账号：{}是否限制访问" ,account);
+            return new ResultDto();
+        }      System.out.println(listUrl);
         //这里可能出现输入验证码的情况，以后处理
         //TODO
-        if (!Optional.ofNullable(listUrl).isPresent()){
-            return new ResultDto();
-        }
         Document doc = getDocument(listUrl);
         //获取公众号
         Element element = doc.select(".profile_nickname").first();
+        if (!Optional.ofNullable(element).isPresent()){
+            log.error("【没有取到页面数据element】 查看账号：{}是否限制访问" ,account);
+            return new ResultDto();
+        }
         String nickname = element.text();
         resultDto.setAccount(account);
         resultDto.setNickname(nickname);
@@ -70,6 +77,7 @@ public class WeChatPublicCrawler {
     public Document getDocument(String url){
         Document document = null;
         try {
+            System.out.println(url);
             document = Jsoup.connect(url).get();
         } catch (IOException e) {
             e.printStackTrace();

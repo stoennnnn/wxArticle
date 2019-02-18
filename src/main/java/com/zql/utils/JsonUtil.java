@@ -3,7 +3,6 @@ package com.zql.utils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import com.zql.dto.ArticleInfoBean;
 import com.zql.dto.ArticleInfoDto;
 import com.zql.dto.ElementDto;
 import lombok.extern.slf4j.Slf4j;
@@ -44,11 +43,11 @@ public class JsonUtil {
      * @param str
      * @return
      */
-    public static List<ArticleInfoBean> toArticleInfoBeans (String str){
+    public static List<ArticleInfoDto> toArticleInfoBeans (String str){
         Gson gson = new Gson();
-        List<ArticleInfoBean> toArticleInfoBeans = new ArrayList<>();
-        Type type = new TypeToken<List<ArticleInfoBean>>() {}.getType();
-        toArticleInfoBeans= gson.fromJson(str, type);
-        return toArticleInfoBeans;
+        List<ArticleInfoDto> articleInfoDtos = new ArrayList<>();
+        Type type = new TypeToken<List<ArticleInfoDto>>() {}.getType();
+        articleInfoDtos= gson.fromJson(str, type);
+        return articleInfoDtos;
     }
 }
