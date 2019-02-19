@@ -55,3 +55,9 @@ mail:
   from: 2672575920@qq.com
   to: 2672575920@qq.com
   subject: 今日更新文章
+#定时任务的相关配置
+quartz:
+  #需要定时调度的方法
+  method1: execute
+  #调度的时间和次数等corn表达式
+  corn: 1/1 * * * * ?

@@ -14,7 +14,6 @@ import javax.jms.Destination;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 
 /**
  * 在controller层调用
@@ -64,7 +63,7 @@ public class ArticleController {
         try {
             if (!articleInfoDto.getArticles().isEmpty()) {
                 Thread.sleep(RandomUtil.randomInt());
-                System.out.println("已经获取到第"+i+"个公众号");
+                System.out.println("已经获取到第"+i+++"个公众号");
                 return articleInfoDto;
             }
         } catch (InterruptedException e) {

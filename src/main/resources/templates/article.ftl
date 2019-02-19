@@ -38,6 +38,7 @@
             <th>公众号</th>
             <th>名称</th>
             <th>描述</th>
+
         </tr>
     <#list params as articleInfoDto>
         <#if (articleInfoDto.articles)?exists>
