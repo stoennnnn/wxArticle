@@ -19,6 +19,8 @@ import java.util.List;
 import java.util.Optional;
 
 /**
+ * 文章信息处理serwviceImpl
+ * 包含保存和发送
  * Created by 26725 on 2019/2/13.
  */
 @Service
@@ -46,7 +48,7 @@ public class ArticleServiceImpl implements ArticleService {
         }
         //获取accountId
         List<WechatAccount> list = accountRepository.findByAccountNumber(resultDto.getAccount());
-        if (!Optional.ofNullable(list).isPresent()) {
+        if (list.isEmpty()) {
             log.error("没有查询到公众号");
             return new ArticleInfoDto();
         }

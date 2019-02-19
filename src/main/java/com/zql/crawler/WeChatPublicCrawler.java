@@ -22,6 +22,7 @@ public class WeChatPublicCrawler {
     private String baseUrl;
 
     /**
+     * 解析doc
      * 获取微信公众号前10条信息
      * @param account 微信公众号
      * @return
@@ -37,7 +38,8 @@ public class WeChatPublicCrawler {
         if (listUrl.isEmpty()){
             log.error("【没有搜索到公众号listUrl】查看账号：{}是否限制访问" ,account);
             return new ResultDto();
-        }      System.out.println(listUrl);
+        }
+        //System.out.println(listUrl);
         //这里可能出现输入验证码的情况，以后处理
         //TODO
         Document doc = getDocument(listUrl);
@@ -77,7 +79,7 @@ public class WeChatPublicCrawler {
     public Document getDocument(String url){
         Document document = null;
         try {
-            System.out.println(url);
+       //     System.out.println(url);
             document = Jsoup.connect(url).get();
         } catch (IOException e) {
             e.printStackTrace();

@@ -48,7 +48,7 @@ public:
   account: javatuanzhang,javastack,hi-arch,keeppuresmile,coderising,cn-linux,VTtalk,chengduitjob,vipmeiwen,hey-stone-money,ytdfz8,lidayushu
   #搜狗微信的基础地址
   baseUrl: http://weixin.sogou.com/weixin?type=1&ie=utf8&query=
-  #文章地址的地址头
+  #文章地址的地址头,用于拼接，并不需要后台做https请求
   urlHead: https://mp.weixin.qq.com
 #邮件内容的相关配置
 mail:
