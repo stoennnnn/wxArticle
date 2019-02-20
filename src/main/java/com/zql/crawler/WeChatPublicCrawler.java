@@ -22,8 +22,8 @@ public class WeChatPublicCrawler {
     private String baseUrl;
 
     /**
+     * 通过搜索公众号，获取微信公众号前10条信息
      * 解析doc
-     * 获取微信公众号前10条信息
      * @param account 微信公众号
      * @return
      */

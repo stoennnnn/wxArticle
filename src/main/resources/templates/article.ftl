@@ -31,6 +31,9 @@
     }
 </style>
 <body>
+<script>
+
+</script>
 <div>
     <h2>最新文章！！！</h2>
     <table id="customers">
@@ -42,7 +45,7 @@
         </tr>
     <#list params as articleInfoDto>
         <#if (articleInfoDto.articles)?exists>
-            <tr>
+            <tr onclick="click">
                     <td rowspan=${(articleInfoDto.articles)?size}>${(articleInfoDto.nickname)!""}</td>
             <#list articleInfoDto.articles as article>
                     <td  color="blue"><a href=${(article.articleContentUrl)!""}>${(article.articleTitle)!""}</a></td>
