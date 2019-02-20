@@ -23,7 +23,7 @@ public class QuartzConfig {
     private String corn;
     /**
      * 配置任务
-     * 生成JobDetail
+     * 设置JobDetail
      * @return
      */
     @Bean(name = "jobDetailFactoryBean")
