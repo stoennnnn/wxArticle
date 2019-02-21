@@ -7,5 +7,5 @@ import java.util.Map;
  * Created by 张启磊 on 2019-2-20.
  */
 public interface RefreshUrlService {
-    Map<String, String> refreshUrl(String account, String title, String url);
+    Map<String, String> refreshUrl(String nickName, String title);
 }

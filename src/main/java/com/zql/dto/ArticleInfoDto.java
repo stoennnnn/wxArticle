@@ -21,5 +21,5 @@ public class ArticleInfoDto {
     //公众号描述
     private String accountDesc;
     //文章信息
-    private List<WechatArticle> articles = new ArrayList<WechatArticle>();
+    private List<WechatArticle> articles = new ArrayList<>();
 }

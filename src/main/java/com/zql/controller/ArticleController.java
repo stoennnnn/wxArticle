@@ -8,6 +8,8 @@ import com.zql.utils.RandomUtil;
 import org.apache.activemq.command.ActiveMQQueue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.jms.Destination;
@@ -21,6 +23,7 @@ import java.util.Optional;
  * Created by 26725 on 2019/2/14.
  */
 @RestController
+@RequestMapping("/article")
 public class ArticleController {
     @Autowired
     private ArticleServiceImpl articleServiceImpl;
@@ -36,7 +39,8 @@ public class ArticleController {
      *
      * @return
      */
-    public void articleInfo() {
+    @GetMapping("/everyday")
+    public String articleInfo() {
         List<ArticleInfoDto> list = new ArrayList<>();
         for (String account : accounts) {
             ArticleInfoDto articleInfoDto = run(account);
@@ -44,13 +48,16 @@ public class ArticleController {
                 list.add(articleInfoDto);
             }
         }
-        //list不为空则添加到队列
-        if (!list.isEmpty()) {
+        //list不为空则添加到队列。
+        //todo 判断有问题
+        if (Optional.ofNullable(list).isPresent()) {
             Destination destination = new ActiveMQQueue("articleQueue");
             //先把list转为json
             final String str = JsonUtil.toJson(list);
             producer.sendMessage(destination, str);
+            return "发送成功";
         }
+        return "无文章更新";
     }
 
     /**

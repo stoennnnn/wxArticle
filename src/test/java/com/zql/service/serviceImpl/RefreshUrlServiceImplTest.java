@@ -18,8 +18,8 @@ public class RefreshUrlServiceImplTest {
     private  RefreshUrlServiceImpl refreshUrlServiceImol;
     @Test
     public void testUrl() throws Exception {
-        String  url="https://mp.weixin.qq.com/s?timestamp=1550671403&src=3&ver=1&signature=ijI7RvQ97NOkLwdylHjqS*wRhXWMwY3ORfF-ByJfT-wxuNa1Cd-N9j2XYRfjErSwu3igaNCIFGwwKrG-WYaK7jyZV9Hytvm7xm-TMJ-tYV8iUuVhfjtxBIVxR9TF0iND9hwbNlYjCx7l3gXGox2QfZ6kDJLXJaSihejPLJ4PKhk=";
-        refreshUrlServiceImol.refreshUrl("javatuanzhang","跳槽季如何快速全面的复习面试题",url);
+//        String  url="https://mp.weixin.qq.com/s?timestamp=1550671403&src=3&ver=1&signature=ijI7RvQ97NOkLwdylHjqS*wRhXWMwY3ORfF-ByJfT-wxuNa1Cd-N9j2XYRfjErSwu3igaNCIFGwwKrG-WYaK7jyZV9Hytvm7xm-TMJ-tYV8iUuVhfjtxBIVxR9TF0iND9hwbNlYjCx7l3gXGox2QfZ6kDJLXJaSihejPLJ4PKhk=";
+//        refreshUrlServiceImol.refreshUrl("javatuanzhang","跳槽季如何快速全面的复习面试题",url);
     }
 
     @Test

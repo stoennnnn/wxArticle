@@ -78,7 +78,7 @@ public class ArticleServiceImpl implements ArticleService {
                     saveMultiArticle(elementDto,articleInfoDto,accountId);
                 }
             }else {
-                log.error("文章还没更新");
+                log.error("【文章还没更新】{}",account);
                 return new ArticleInfoDto();
             }
         }
