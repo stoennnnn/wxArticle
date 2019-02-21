@@ -49,6 +49,9 @@ public class ElementDto {
         public Integer subtype;
         public String  title;
 
+        public void multiAppMsgItemList() {
+        }
+
         public static class MultiAppMsgItemInfo{
             @SerializedName("audio_fileid")
             public Integer audioFileid;

@@ -49,7 +49,7 @@ public:
   #搜狗微信的基础地址
   baseUrl: http://weixin.sogou.com/weixin?type=1&ie=utf8&query=
   #文章地址的地址头,用于拼接，并不需要后台做https请求
-  urlHead: https://mp.weixin.qq.com
+  urlHead: https://mp.weixin.qq.com/s?timestamp=1550733240&amp;src=3&amp;ver=1&amp;signature=P0-u-fFhDOuIAclS1SlitZQf2tA4juG-75JRTWYii1SRevpmrZ3*WC3OcH9sEe3NvsRj5k-ER8zQyj2RwGGFoHJH2FjRRiCE-jLkB5ogSsTYjAovEZTfLvjHBkndPIfo-xqu8LPcf99DUtg2uNkdMxqj5MfCipckUJs15jGUAP4=
 #邮件内容的相关配置
 mail:
   from: 2672575920@qq.com
@@ -60,4 +60,4 @@ quartz:
   #需要定时调度的方法
   method1: execute
   #调度的时间和次数等corn表达式
-  corn: 1/1 * * * * ?
+  corn: 0 0 12 * * ?

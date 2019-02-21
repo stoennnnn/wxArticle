@@ -79,7 +79,6 @@ public class WeChatPublicCrawler {
     public Document getDocument(String url){
         Document document = null;
         try {
-       //     System.out.println(url);
             document = Jsoup.connect(url).get();
         } catch (IOException e) {
             e.printStackTrace();

@@ -97,7 +97,7 @@ public class ArticleServiceImpl implements ArticleService {
         String title = elementDto.getAppMsgExtInfo().title;
         //需要处理contentUrl
         String contentUrl = elementDto.getAppMsgExtInfo().contentUrl.replaceAll("amp;","");
-        System.out.println(urlHead+contentUrl);
+        //System.out.println(urlHead+contentUrl);
         String digest = elementDto.getAppMsgExtInfo().digest;
         String cover = elementDto.getAppMsgExtInfo().cover;
         //datetime格式为long
