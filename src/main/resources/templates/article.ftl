@@ -29,6 +29,9 @@
     td{
         background-color: #F5F5DC;
     }
+    span{
+        color: blue;
+    }
 </style>
 <body>
 <#--<script src="http://www.w3school.com.cn/jquery/jquery.js"></script>-->
@@ -55,27 +58,33 @@
 <#--//<td ><a onclick="click(this)">重新获取</a></td>-->
 <#--</script>-->
 <div>
-    <h2>最新文章！！！</h2>
     <table id="customers">
         <tr>
             <th>公众号</th>
             <th>名称</th>
             <th>描述</th>
-            <th>刷新</th>
+            <th>发布时间</th>
         </tr>
     <#list params as articleInfoDto>
         <#if (articleInfoDto.articles)?exists>
             <tr>
                     <td rowspan=${(articleInfoDto.articles)?size}>${(articleInfoDto.nickname)!""}</td>
             <#list articleInfoDto.articles as article>
-                    <td  color="blue"><a href=${(article.articleContentUrl)!""}>${(article.articleTitle)!""}</a></td>
+                    <td  color="blue"><a href=${(article.articleContentUrl)!""}><span>${(article.articleTitle)!""}</span></a></td>
                     <td>${(article.articleDigest)!""}</td>
-                    <td ><a href="http://localhost:8888/refresh/newurl?nickName=${(articleInfoDto.account)}&title=${(article.articleId)}">刷新2</a></td>
+                    <td >
+                        <#--url有中文会被编码，只写数字和字母-->
+                        <a href="http://localhost:8888/refresh/newurl?accountId=${(articleInfoDto.accountId)}&articleId=${(article.articleId)}">
+                            <#--先转字符串除去","再转number 成功！-->
+                            <span><#assign dlong = article.articleDatetime?c?number*1000 />${dlong?number_to_datetime}</span>
+                        </a>
+                    </td>
              </tr>
             </#list>
         </#if>
     </#list>
-    </table>
+    </table><br>
+    <span><em>备注:链接过期请点击发布时间重新获取</em></span>
 </div>
 </body>
 </html>

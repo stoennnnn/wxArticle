@@ -33,11 +33,11 @@ public class RefreshUrlServiceImpl implements RefreshUrlService {
     private String baseUrl;
     /**
      * 链接过期后重新刷新链接
-     * @param nickName 账号
-     * @param title
+     * @param accountId 账号id
+     * @param articleId 文章id
      */
     @Override
-    public Map<String, String> refreshUrl(String nickName, String title) {
+    public Map<String, String> refreshUrl(String accountId,  String articleId) {
         Map<String, String> resultMap = new HashMap<>();
         //测试文章链接是否过期
  //       String result = testUrl(url);
@@ -45,7 +45,7 @@ public class RefreshUrlServiceImpl implements RefreshUrlService {
 //            resultMap.put("result", "false");
 //            return resultMap;
 //        } else if ("false".equals(result)) {
-        //通过nickeName获取accountId
+        //通过accountId和articleId 获取account和title
         List<WechatAccount> accountList = accountRepository.findByAccountNickname(nickName);
         if (Optional.ofNullable(accountList).isPresent()) {
             log.error("【根据nickeName查找公众号失败！】：{}", nickName);
@@ -76,7 +76,6 @@ public class RefreshUrlServiceImpl implements RefreshUrlService {
                         List<ElementDto.AppMsgExtInfo.MultiAppMsgItemInfo> multiAppMsgItemInfos = second.get();
                         contentUrl = multiAppMsgItemInfos.stream().filter(f -> f.title.equals(title))
                                 .map(f -> f.contentUrl).toString().replace("amp;", "");
-
                     }
                 } else {
                     //如果外层有值，直接取出来

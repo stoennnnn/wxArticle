@@ -13,21 +13,20 @@ import java.util.Optional;
  */
 @RestController
 @RequestMapping("/refresh")
-@ResponseBody
 public class RefreshUrlController {
     @Autowired
     private RefreshUrlServiceImpl refreshUrlServiceImpl;
 
     /**
      * 直接返回新的url，不用去校验旧的url，减少请求次数
-     * @param nickName
-     * @param title
+     * @param accountId
+     * @param articleId
      * @return
      */
     @PostMapping("/newurl")
-    public String refreshUrl(@RequestParam String nickName,
-                             @RequestParam String title) {
-        Map<String, String> resultMap = refreshUrlServiceImpl.refreshUrl(nickName, title);
+    public String refreshUrl(@RequestParam String accountId,
+                             @RequestParam String articleId) {
+        Map<String, String> resultMap = refreshUrlServiceImpl.refreshUrl(accountId, articleId);
         if (Optional.ofNullable(resultMap).isPresent()){
             if ("false".equals(resultMap.get("result"))) {
                 return "";

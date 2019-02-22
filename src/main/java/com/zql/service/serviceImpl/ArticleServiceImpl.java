@@ -100,7 +100,7 @@ public class ArticleServiceImpl implements ArticleService {
         //System.out.println(urlHead+contentUrl);
         String digest = elementDto.getAppMsgExtInfo().digest;
         String cover = elementDto.getAppMsgExtInfo().cover;
-        //datetime格式为long
+        //datetime格式为long,乘以1000存放，freemarker可以直接转换.不用
         Long datetime = elementDto.getCommMsgInfo().datetime;
         article.setArticleTitle(title);
 
