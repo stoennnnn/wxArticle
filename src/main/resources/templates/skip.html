@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>跳转中......</title>
+</head>
+<script src="http://www.w3school.com.cn/jquery/jquery.js"></script>
+<script type="text/javascript">
+    //页面打开后自动跳转
+    window.onload=function () {
+        var newUrl = document.getElementById("skip").textContent;
+        window.location.href=newUrl;
+    };
+</script>
+<body>
+跳转中......
+<p  id="skip" hidden><span th:text="${key}" /></p>
+</body>
+</html>

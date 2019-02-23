@@ -2,7 +2,11 @@ package com.zql.controller;
 
 import com.zql.service.serviceImpl.RefreshUrlServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Map;
 import java.util.Optional;
@@ -11,7 +15,8 @@ import java.util.Optional;
  * 重新获取文章链接并返回
  * Created by 26725 on 2019/2/21.
  */
-@RestController
+//这里要做页面跳转，只能用controller注解
+@Controller
 @RequestMapping("/refresh")
 public class RefreshUrlController {
     @Autowired
@@ -24,20 +29,36 @@ public class RefreshUrlController {
      * @return
      */
     @GetMapping("/newurl")
-    public String refreshUrl(@RequestParam Integer accountId,
-                             @RequestParam Integer articleId) {
+    public ModelAndView refreshUrl(@RequestParam Integer accountId,
+                                   @RequestParam Integer articleId) {
         Map<String, String> resultMap = refreshUrlServiceImpl.refreshUrl(accountId, articleId);
+        ModelAndView model = new ModelAndView();
+        model.setViewName("skip");
+//        try {
+//            //请求太快容易导致被封
+//            Thread.sleep(RandomUtil.randomInt());
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
         if (Optional.ofNullable(resultMap).isPresent()){
             if ("false".equals(resultMap.get("result"))) {
-                return "";
+                //获取文章newUrl失败
+                model.addObject("key","false");
+                return model;
             } else if ("true".equals(resultMap.get("result"))) {
+                //返回newUrl
                 String newUrl = resultMap.get("newUrl");
-                return newUrl;
+                model.addObject("key",newUrl);
+                return model;
             } else {
-                return "";
+                //其它情况
+                model.addObject("key","false");
+                return model;
             }
         }else{
-            return "";
+            //resulMap值为空
+            model.addObject("key","false");
+            return model;
         }
     }
 

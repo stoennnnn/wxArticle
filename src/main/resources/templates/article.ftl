@@ -84,7 +84,7 @@
         </#if>
     </#list>
     </table><br>
-    <span><em>备注:链接过期请点击发布时间重新获取</em></span>
+    <span><em>备注:链接过期请点击发布时间重新获取。</em></span>
 </div>
 </body>
 </html>

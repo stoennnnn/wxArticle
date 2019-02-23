@@ -62,3 +62,4 @@ quartz:
   method1: execute
   #调度的时间和次数等corn表达式
   corn: 0 0 12 * * ?
+
