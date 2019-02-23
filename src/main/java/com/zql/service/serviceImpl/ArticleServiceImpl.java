@@ -4,6 +4,7 @@ import com.zql.dataobject.WechatAccount;
 import com.zql.dataobject.WechatArticle;
 import com.zql.dto.ArticleInfoDto;
 import com.zql.dto.ElementDto;
+import com.zql.dto.MultiAppMsgItemInfo;
 import com.zql.dto.ResultDto;
 import com.zql.repository.WechatAccountRepository;
 import com.zql.repository.WechatArticleRepository;
@@ -120,7 +121,7 @@ public class ArticleServiceImpl implements ArticleService {
      */
     @Transactional
     public void saveMultiArticle(ElementDto elementDto,ArticleInfoDto articleInfoDto,Integer accountId){
-        List<ElementDto.AppMsgExtInfo.MultiAppMsgItemInfo> multiAppMsgItemList = elementDto.getAppMsgExtInfo().multiAppMsgItemList;
+        List<MultiAppMsgItemInfo> multiAppMsgItemList = elementDto.getAppMsgExtInfo().multiAppMsgItemList;
         for (int i = 0; i < multiAppMsgItemList.size(); i++) {
             WechatArticle article2 = new WechatArticle();
             article2.setArticleTitle(multiAppMsgItemList.get(i).title);

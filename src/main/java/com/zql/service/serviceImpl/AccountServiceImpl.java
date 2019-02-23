@@ -20,7 +20,7 @@ public class AccountServiceImpl implements AccountService {
     @Autowired
     private WechatAccountRepository accountRepository;
     /**
-     * 保存公众号信息并返回抢10条文章信息
+     * 保存公众号信息并返回前10条文章信息
      * @return
      */
     @Override

@@ -66,7 +66,7 @@
             <th>发布时间</th>
         </tr>
     <#list params as articleInfoDto>
-        <#if (articleInfoDto.articles)?exists>
+        <#if (articleInfoDto.articles)??>
             <tr>
                     <td rowspan=${(articleInfoDto.articles)?size}>${(articleInfoDto.nickname)!""}</td>
             <#list articleInfoDto.articles as article>
@@ -74,9 +74,9 @@
                     <td>${(article.articleDigest)!""}</td>
                     <td >
                         <#--url有中文会被编码，只写数字和字母-->
-                        <a href="http://localhost:8888/refresh/newurl?accountId=${(articleInfoDto.accountId)}&articleId=${(article.articleId)}">
+                        <a href="http://localhost:8888/refresh/newurl?accountId=${(article.accountId)}&articleId=${(article.articleId)}">
                             <#--先转字符串除去","再转number 成功！-->
-                            <span><#assign dlong = article.articleDatetime?c?number*1000 />${dlong?number_to_datetime}</span>
+                            <span><#assign dlong = article.articleDatetime?c?number*1000 />${dlong?number_to_datetime!""}</span>
                         </a>
                     </td>
              </tr>

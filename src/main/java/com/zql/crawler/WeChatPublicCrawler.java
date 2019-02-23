@@ -57,7 +57,7 @@ public class WeChatPublicCrawler {
         Element descElement = element1.select("div.profile_desc_value").first();
         String accountDesc = descElement.text();
         resultDto.setAccountDesc(accountDesc);
-        //获取文章信息并处理数据，方便转换
+        //获取公众号信息并处理数据，方便转换
         content = doc.html().split("var msgList = ")[1].split("seajs.use")[0].trim();
         content = content.substring(0, content.lastIndexOf(";"));
         content = content.substring(8);

@@ -23,9 +23,9 @@ public class RefreshUrlController {
      * @param articleId
      * @return
      */
-    @PostMapping("/newurl")
-    public String refreshUrl(@RequestParam String accountId,
-                             @RequestParam String articleId) {
+    @GetMapping("/newurl")
+    public String refreshUrl(@RequestParam Integer accountId,
+                             @RequestParam Integer articleId) {
         Map<String, String> resultMap = refreshUrlServiceImpl.refreshUrl(accountId, articleId);
         if (Optional.ofNullable(resultMap).isPresent()){
             if ("false".equals(resultMap.get("result"))) {
