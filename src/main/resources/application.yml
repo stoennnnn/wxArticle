@@ -68,5 +68,5 @@ quartz:
 
 #配置重新获取url的host地址
 addr:
-  host: http://47.101.207.245:8888
+  host: http://localhost:8888
 
