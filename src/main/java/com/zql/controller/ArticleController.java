@@ -48,14 +48,13 @@ public class ArticleController {
                 list.add(articleInfoDto);
             }
         }
-        //list不为空则添加到队列。
-        //todo 判断有问题
-        if (Optional.ofNullable(list).isPresent()) {
+        //list里面嵌套了list，肯定不为空，这里要对内层list判空；不为空，则添加到队列。
+        if (list.get(0).getArticles().size()>0) {
             Destination destination = new ActiveMQQueue("articleQueue");
             //先把list转为json
             final String str = JsonUtil.toJson(list);
             producer.sendMessage(destination, str);
-            return "发送成功";
+            return "文章已经成功发送到队列";
         }
         return "无文章更新";
     }
