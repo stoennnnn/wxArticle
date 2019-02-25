@@ -4,7 +4,6 @@ import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
@@ -16,8 +15,6 @@ import javax.mail.internet.MimeMessage;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-
-import static org.aspectj.bridge.Version.text;
 
 /**
  * Created by 26725 on 2019/2/14.
@@ -35,6 +32,9 @@ public class SendMail {
     private String to;
     @Value("${mail.subject}")
     private String subject;
+    //程序部署的ip和端口
+    @Value("${addr.host}")
+    private String host;
     public void send(Object object,String templateName) throws MessagingException {
         MimeMessage mimeMessage = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
@@ -43,6 +43,7 @@ public class SendMail {
         helper.setSubject(subject);
         Map<String, Object> resultMap = new HashMap<>();
         resultMap.put("params",object);
+        resultMap.put("host",host);
         try {
             Template template = configurer.getConfiguration().getTemplate(templateName);
             String text = FreeMarkerTemplateUtils.processTemplateIntoString(template, resultMap);

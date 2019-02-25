@@ -74,7 +74,7 @@
                     <td>${(article.articleDigest)!""}</td>
                     <td >
                         <#--url有中文会被编码，只写数字和字母-->
-                        <a href="http://localhost:8888/refresh/newurl?accountId=${(article.accountId)}&articleId=${(article.articleId)}">
+                        <a href="${(host)}/refresh/newurl?accountId=${(article.accountId)}&articleId=${(article.articleId)}">
                             <#--先转字符串除去","再转number 成功！-->
                             <span><#assign dlong = article.articleDatetime?c?number*1000 />${dlong?number_to_datetime!""}</span>
                         </a>

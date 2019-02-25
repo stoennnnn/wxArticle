@@ -45,8 +45,8 @@ spring:
 
 #公众号相关配置
 public:
-  account: javatuanzhang
-  #,javastack,hi-arch,keeppuresmile,coderising,cn-linux,VTtalk,chengduitjob,vipmeiwen,hey-stone-money,ytdfz8,lidayushu
+    #java团长,java技术栈,马龙翻身,纯洁的微笑,菜鸟架构,python之禅,一只鱼的传说
+    account: javatuanzhang,javastack,coderising,keeppuresmile,hi-arch,VTtalk,lidayushu
   #搜狗微信的基础地址
   baseUrl: http://weixin.sogou.com/weixin?type=1&ie=utf8&query=
   #文章地址的地址头,用于拼接，并不需要后台做https请求
@@ -62,4 +62,8 @@ quartz:
   method1: execute
   #调度的时间和次数等corn表达式
   corn: 0 0 12 * * ?
+
+#配置重新获取url的host地址
+addr:
+  host: http://47.101.207.245:8888
 
