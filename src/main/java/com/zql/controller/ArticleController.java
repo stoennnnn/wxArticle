@@ -5,6 +5,7 @@ import com.zql.mq.Producer;
 import com.zql.service.serviceImpl.ArticleServiceImpl;
 import com.zql.utils.JsonUtil;
 import com.zql.utils.RandomUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.activemq.command.ActiveMQQueue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,6 +25,7 @@ import java.util.Optional;
  */
 @RestController
 @RequestMapping("/article")
+@Slf4j
 public class ArticleController {
     @Autowired
     private ArticleServiceImpl articleServiceImpl;
@@ -69,7 +71,7 @@ public class ArticleController {
         try {
             if (!articleInfoDto.getArticles().isEmpty()) {
                 Thread.sleep(RandomUtil.randomInt());
-                System.out.println("已经获取到第"+i+++"个公众号");
+               log.info("已经获取到第"+i+++"个公众号:{}",account);
                 return articleInfoDto;
             }
         } catch (InterruptedException e) {
