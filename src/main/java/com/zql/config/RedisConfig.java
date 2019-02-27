@@ -16,11 +16,11 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 @Configuration
 @EnableCaching//开启注解
 public class RedisConfig {
-    @Bean
-    public CacheManager cacheManager(RedisTemplate<?,?>  redisTemplate) {
-        CacheManager cacheManager = new RedisCacheManager(redisTemplate);
-        return cacheManager;
-    }
+//    @Bean
+//    public CacheManager cacheManager(RedisTemplate<?,?>  redisTemplate) {
+//        CacheManager cacheManager = new RedisCacheManager(redisTemplate);
+//        return cacheManager;
+//    }
     //redisTemplate 保存对象
     @Bean
     public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory factory) {
