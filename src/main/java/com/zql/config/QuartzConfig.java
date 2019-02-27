@@ -1,5 +1,6 @@
-package com.zql.quartz;
+package com.zql.config;
 
+import com.zql.quartz.ArticleTask;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,7 +15,7 @@ import org.springframework.scheduling.quartz.SchedulerFactoryBean;
  */
 @Configuration
 public class QuartzConfig {
-    private  ArticleTask  object1;
+    private ArticleTask object1;
     //需要定时执行的方法
     @Value("${quartz.method1}")
     private String method1;

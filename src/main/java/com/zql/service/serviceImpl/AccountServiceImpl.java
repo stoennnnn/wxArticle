@@ -27,6 +27,7 @@ public class AccountServiceImpl implements AccountService {
     public ResultDto saveAccountInfo(String account) {
         List<WechatAccount> list = accountRepository.findByAccountNumber(account);
         ResultDto resultDto = crawler.getFirst(account);
+        //todo 从redis取用户id
         if (list.isEmpty()){
             WechatAccount wechatAccount = new WechatAccount();
             wechatAccount.setAccountNickname(resultDto.getNickname());
