@@ -1,19 +1,17 @@
 package com.zql.controller;
 
 import com.zql.dto.ArticleInfoDto;
-import com.zql.mq.Producer;
+import com.zql.mail.SendMail;
 import com.zql.service.serviceImpl.ArticleServiceImpl;
-import com.zql.utils.JsonUtil;
 import com.zql.utils.RandomUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.activemq.command.ActiveMQQueue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.jms.Destination;
+import javax.mail.MessagingException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -30,7 +28,7 @@ public class ArticleController {
     @Autowired
     private ArticleServiceImpl articleServiceImpl;
     @Autowired
-    private Producer producer;
+    private SendMail sendMail;
     //公众号集合
     @Value("${public.account}")
     private List<String> accounts;
@@ -50,12 +48,18 @@ public class ArticleController {
                 list.add(articleInfoDto);
             }
         }
+
         //list里面嵌套了list，肯定不为空，这里要对内层list判空；不为空，则添加到队列。
         if (list.get(0).getArticles().size()>0) {
-            Destination destination = new ActiveMQQueue("articleQueue");
-            //先把list转为json
-            final String str = JsonUtil.toJson(list);
-            producer.sendMessage(destination, str);
+            try {
+                sendMail.send(list,"article.ftl");
+            } catch (MessagingException e) {
+                e.printStackTrace();
+            }
+//            Destination destination = new ActiveMQQueue("articleQueue");
+//            //先把list转为json
+//            final String str = JsonUtil.toJson(list);
+//            producer.sendMessage(destination, str);
             return "文章已经成功发送到队列";
         }
         return "无文章更新";
