@@ -1,7 +1,9 @@
 package com.zql.crawler;
 
 import com.zql.dto.ElementDto;
+import com.zql.dto.IPEntity;
 import com.zql.dto.ResultDto;
+import com.zql.utils.HTTPUtil;
 import com.zql.utils.JsonUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
@@ -10,7 +12,6 @@ import org.jsoup.nodes.Element;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,6 +22,11 @@ public class WeChatPublicCrawler {
     @Value("${public.baseUrl}")
     private String baseUrl;
 
+    @Value("${public.ip}")
+    private String  ip;
+
+    @Value("${public.port}")
+    private int  port;
     /**
      * 通过搜索公众号，获取微信公众号前10条信息
      * 解析doc
@@ -28,11 +34,18 @@ public class WeChatPublicCrawler {
      * @return
      */
     public ResultDto getFirst( String account){
+
         ResultDto resultDto = new ResultDto();
         //需要解析的数据内容
         String content;
         String searchUrl = baseUrl + account;
-        Document document = getDocument(searchUrl);
+        IPEntity ipEntity = new IPEntity(ip,port,1);
+        String str = HTTPUtil.getResponseContent(searchUrl, ipEntity,1);
+        Document document = Jsoup.parse(str);
+        if ("false".equals(str)){
+            log.error("【通过ip:{}:{} 查询公众号:：{}内容异常】",ip,port,account);
+            return new ResultDto();
+        }
         //查询到所有列表信息的url
         String listUrl = document.select(".tit a").attr("href");
         if (listUrl.isEmpty()){
@@ -40,9 +53,13 @@ public class WeChatPublicCrawler {
             return new ResultDto();
         }
         //System.out.println(listUrl);
-        //这里可能出现输入验证码的情况，以后处理
-        //TODO
-        Document doc = getDocument(listUrl);
+        //TODO 这里可能出现输入验证码的情况，以后处理
+        String str2 = HTTPUtil.getResponseContent(listUrl, ipEntity,2);
+        Document doc = Jsoup.parse(str2);
+        if ("false".equals(str)){
+            log.error("【通过ip:{}:{}请求公众号: {}最近10篇文章异常】",ip,port,account);
+            return new ResultDto();
+        }
         //获取公众号
         Element element = doc.select(".profile_nickname").first();
         if (!Optional.ofNullable(element).isPresent()){
@@ -69,20 +86,5 @@ public class WeChatPublicCrawler {
         }
         resultDto.setElementDtos(elementDtos);
         return resultDto;
-    }
-
-    /**
-     * 获取页面
-     * @param url url
-     * @return
-     */
-    public Document getDocument(String url){
-        Document document = null;
-        try {
-            document = Jsoup.connect(url).get();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return document;
     }
 }

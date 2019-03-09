@@ -43,12 +43,11 @@ public class ArticleServiceImpl implements ArticleService {
         //需要插入队列的articleInfoDto
         ArticleInfoDto articleInfoDto = new ArticleInfoDto();
         BeanUtils.copyProperties(resultDto, articleInfoDto);
-        if (!Optional.ofNullable(resultDto).isPresent()) {
-            log.error("resultDto不存在");
+        if (!Optional.ofNullable(resultDto.getElementDtos()).isPresent()) {
             return new ArticleInfoDto();
         }
         //获取accountId
-        List<WechatAccount> list = accountRepository.findByAccountNumber(resultDto.getAccount());
+        List<WechatAccount> list = accountRepository.findByAccountNumber(account);
         if (list.isEmpty()) {
             log.error("没有查询到公众号");
             return new ArticleInfoDto();

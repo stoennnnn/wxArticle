@@ -18,15 +18,15 @@
             <onMismatch>accept</onMismatch>
        </filter>
 	   <encoder>
-	       <pattern>
-	           %d - %msg%n
-	       </pattern>
+	       <pattern>%d - %msg%n</pattern>
+           <charset>UTF-8</charset>
 	   </encoder>
 	   <!-- 滚动方案 -->
 	   <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
 	       <!-- 路径 C:\Users\38213\Desktop\wx\log -->
-	       <fileNamePattern>C:/Users/38213/Desktop/wx/log/info_%d.log</fileNamePattern>
-	   </rollingPolicy>
+	       <!--<fileNamePattern>C:/Users/38213/Desktop/wx/log/info_%d.log</fileNamePattern>-->
+           <fileNamePattern>/root/wx/log/info_%d.log</fileNamePattern>
+       </rollingPolicy>
 	</appender>
     <!-- 文件日志配置 error级别 -->
     <appender name="filerrlog" class="ch.qos.logback.core.rolling.RollingFileAppender">
@@ -37,11 +37,13 @@
            <pattern>
                %msg%n
            </pattern>
+          <charset>UTF-8</charset>
        </encoder>
        <!-- 滚动方案 -->
        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
            <!-- 路径 -->
-           <fileNamePattern>C:/Users/38213/Desktop/wx/log/err_%d.log</fileNamePattern>
+           <!--<fileNamePattern>C:/Users/38213/Desktop/wx/log/err_%d.log</fileNamePattern>-->
+           <fileNamePattern>/root/wx/log/err_%d.log</fileNamePattern>
        </rollingPolicy>
     </appender>	
     <root level="info">

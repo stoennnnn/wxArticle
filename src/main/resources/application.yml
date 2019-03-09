@@ -70,6 +70,10 @@ public:
   baseUrl: http://weixin.sogou.com/weixin?type=1&ie=utf8&query=
   #文章地址的地址头,用于拼接，并不需要后台做https请求
   urlHead: https://mp.weixin.qq.com
+  #代理ip
+  ip: 58.220.95.107
+  #代理端口
+  port: 8080
 #邮件内容的相关配置
 mail:
   from: 2672575920@qq.com
