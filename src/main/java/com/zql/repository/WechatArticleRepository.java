@@ -2,9 +2,10 @@ package com.zql.repository;
 
 import com.zql.dataobject.WechatArticle;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import java.util.List;
 
 /**
@@ -16,4 +17,9 @@ public interface WechatArticleRepository extends JpaRepository<WechatArticle,Int
     List<WechatArticle> findByAccountId(Integer accountId);
     //查找该公众号的特定文章
     WechatArticle findByArticleIdAndAccountId(Integer article, Integer accountId);
+    //保存文章内容信息
+    @Transactional
+    @Modifying
+    @Query(value = "update WechatArticle a set articleContent=?1  where a.articleId =?2")
+    int saveContentById(String articleContent, Integer articleId);
 }

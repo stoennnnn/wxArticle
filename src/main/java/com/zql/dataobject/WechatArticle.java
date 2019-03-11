@@ -1,13 +1,12 @@
 package com.zql.dataobject;
 
 import lombok.Data;
-import lombok.Generated;
 import org.hibernate.annotations.DynamicUpdate;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import java.sql.Date;
 
 /**
  * Created by 26725 on 2019/2/11
@@ -25,5 +24,6 @@ public class WechatArticle {
     private String articleDigest;
     private String articleContentUrl;
     private String articleCoverUrl;
+    private String articleContent;
     private Long articleDatetime;
 }

@@ -65,7 +65,7 @@ spring:
 #公众号相关配置
 public:
   #java团长,java技术栈,马龙翻身,纯洁的微笑,菜鸟架构,python之禅,一只鱼的传说
-  account: javatuanzhang,javastack,coderising,keeppuresmile,hi-arch,VTtalk,lidayushu
+  account: javatuanzhang,javastack,coderising,keeppuresmile,hi-arch,VTtalk
   #搜狗微信的基础地址
   baseUrl: http://weixin.sogou.com/weixin?type=1&ie=utf8&query=
   #文章地址的地址头,用于拼接，并不需要后台做https请求
@@ -74,6 +74,8 @@ public:
   ip: 58.220.95.107
   #代理端口
   port: 8080
+  #ip类型
+  type: 1
 #邮件内容的相关配置
 mail:
   from: 2672575920@qq.com

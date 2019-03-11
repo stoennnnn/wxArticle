@@ -6,7 +6,6 @@ import com.zql.dto.ResultDto;
 import com.zql.utils.HTTPUtil;
 import com.zql.utils.JsonUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.springframework.beans.factory.annotation.Value;
@@ -40,9 +39,8 @@ public class WeChatPublicCrawler {
         String content;
         String searchUrl = baseUrl + account;
         IPEntity ipEntity = new IPEntity(ip,port,1);
-        String str = HTTPUtil.getResponseContent(searchUrl, ipEntity,1);
-        Document document = Jsoup.parse(str);
-        if ("false".equals(str)){
+        Document document = HTTPUtil.getResponseContent(searchUrl, ipEntity, 1, account);
+        if (!Optional.ofNullable(document).isPresent()){
             log.error("【通过ip:{}:{} 查询公众号:：{}内容异常】",ip,port,account);
             return new ResultDto();
         }
@@ -54,9 +52,8 @@ public class WeChatPublicCrawler {
         }
         //System.out.println(listUrl);
         //TODO 这里可能出现输入验证码的情况，以后处理
-        String str2 = HTTPUtil.getResponseContent(listUrl, ipEntity,2);
-        Document doc = Jsoup.parse(str2);
-        if ("false".equals(str)){
+        Document doc = HTTPUtil.getResponseContent(listUrl, ipEntity, 2, account);
+        if (!Optional.ofNullable(doc).isPresent()){
             log.error("【通过ip:{}:{}请求公众号: {}最近10篇文章异常】",ip,port,account);
             return new ResultDto();
         }

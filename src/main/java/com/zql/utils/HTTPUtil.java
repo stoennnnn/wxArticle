@@ -23,9 +23,10 @@ public class HTTPUtil {
      * @param url 请求地址
      * @param ipEntity
      * @param num 请求头编号
+     * @param acount
      * @return
      */
-    public static  String getResponseContent(String url, IPEntity ipEntity,int num) {
+    public static  Document getResponseContent(String url, IPEntity ipEntity,int num,String acount) {
         //创建httpclient实例
         CloseableHttpClient httpClient = HttpClients.createDefault();
         //创建httpGet实例
@@ -51,13 +52,14 @@ public class HTTPUtil {
             httpGet.setConfig(requestConfig);
         }
         //设置请求头
-        //设置请求头
         httpGet.setHeader("Accept","text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
         if (num==1)
-            httpGet.setHeader("Accept-Encoding","gzip, deflate");
-        else if (num==2)
             httpGet.setHeader("Accept-Encoding","gzip, deflate, br");
+        else if (num==2)
+            httpGet.setHeader("Accept-Encoding","gzip, deflate");
         httpGet.setHeader("Accept-Language","zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2");
+        if(num==2)
+            httpGet.setHeader("Cache-Control","max-age=0");
         httpGet.setHeader("Connection","keep-alive");
         if (num==2)
             httpGet.setHeader("Cache-Control","max-age=0");
@@ -71,27 +73,60 @@ public class HTTPUtil {
             httpGet.setHeader("Host","weixin.sogou.com");
         else
             httpGet.setHeader("Host","mp.weixin.qq.com");
+        if (num==1)
+            httpGet.setHeader("Referer","https://weixin.sogou.com/weixin?type=1&s_from=input&query=+"+acount+"&ie=utf8&_sug_=y&_sug_type_=&w=01019900&sut=1137&sst0=1552151452663&lkt=1%2C1552151451821%2C1552151451821");
+        else
+
         httpGet.setHeader("Upgrade-Insecure-Requests","1");
         httpGet.setHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:57.0) Gecko/20100101 Firefox/57.0");
         CloseableHttpResponse httpResponse;
+        Document doc = null;
         try {
             httpResponse = httpClient.execute(httpGet);
             String s = EntityUtils.toString(httpResponse.getEntity(),"UTF-8");
-            Document doc = Jsoup.parse(s);
-         //   System.out.println(doc.toString());
-            if (s.length()>0)
-                return s;
-//            if (!Optional.ofNullable(httpResponse).isPresent()) {
-//                if (200 == httpResponse.getStatusLine().getStatusCode()) {
-//                    String str = EntityUtils.toString(httpResponse.getEntity());
-//                    return  str;
-//                }
-//            }
+            doc = Jsoup.parse(s);
         } catch (ClientProtocolException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return "false";
+        return doc;
+    }
+
+    /**
+     * 获取文章内容请求头设置
+     * @param url
+     * @param ipEntity
+     * @return
+     */
+    public static Document getResponseContent(String url, IPEntity ipEntity) {
+        //创建httpclient实例
+        CloseableHttpClient httpClient = HttpClients.createDefault();
+        //创建httpGet实例
+        HttpGet httpGet = new HttpGet(url);
+        //设置代理
+        HttpHost proxy;
+        proxy = new HttpHost(ipEntity.getIp(), ipEntity.getPort());
+        //设置请求超时和读取超时时间，如果返回200则视为有效ip
+        RequestConfig requestConfig = RequestConfig.custom()
+                .setProxy(proxy)
+                .setConnectTimeout(5000)//设置连接超时时间
+                .setConnectionRequestTimeout(5000) // 设置请求超时时间
+                .setSocketTimeout(5000)
+                .build();
+        httpGet.setHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:57.0) Gecko/20100101 Firefox/57.0");
+        CloseableHttpResponse httpResponse;
+        Document document = null;
+        try {
+            httpResponse = httpClient.execute(httpGet);
+            String s = EntityUtils.toString(httpResponse.getEntity(), "UTF-8");
+            document = Jsoup.parse(s);
+        } catch (ClientProtocolException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return document;
     }
 }
+
