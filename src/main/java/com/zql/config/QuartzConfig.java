@@ -15,7 +15,6 @@ import org.springframework.scheduling.quartz.SchedulerFactoryBean;
  */
 @Configuration
 public class QuartzConfig {
-    private ArticleTask object1;
     //需要定时执行的方法
     @Value("${quartz.method1}")
     private String method1;
