@@ -34,9 +34,11 @@ public class ArticleDetailCrawler {
         List<WechatArticle> articles = articleInfoDto.getArticles();
         if (!Optional.ofNullable(articles).isPresent()){
             log.error("【保存文章内容】 文章的url不存在");
+            return;
         }
         for (WechatArticle article : articles) {
             Document doc = HTTPUtil.getResponseContent(article.getArticleContentUrl(), ipEntity);
+            doc.removeAttr("script");
             int i = repository.saveContentById(doc.toString(), article.getArticleId());
         }
     }

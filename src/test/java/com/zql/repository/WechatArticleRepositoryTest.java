@@ -20,15 +20,15 @@ public class WechatArticleRepositoryTest {
     private WechatArticleRepository repository;
     @Test
     public void  save(){
-//        WechatArticle wechatArticle = new WechatArticle();
-//       // Date date = new Date(1549769380);
-//        wechatArticle.setAccountId(1);
-//        wechatArticle.setArticleContentUrl("www.baidu.com");
-//        wechatArticle.setArticleCoverUrl("www.baidu.com");
-//        wechatArticle.setArticleDigest("java学习公众号");
-//        wechatArticle.setArticleTitle("我们都来学java");
-//        wechatArticle.setArticleDatetime(12L);
-//        repository.save(wechatArticle);
+        WechatArticle wechatArticle = new WechatArticle();
+       // Date date = new Date(1549769380);
+        wechatArticle.setAccountId(1);
+        wechatArticle.setArticleContentUrl("www.baidu.com");
+        wechatArticle.setArticleCoverUrl("www.baidu.com");
+        wechatArticle.setArticleDigest("test");
+        wechatArticle.setArticleTitle("test");
+        wechatArticle.setArticleDatetime(1550538120L);
+        repository.save(wechatArticle);
     }
 
     @Test
