@@ -64,7 +64,6 @@ public class ArticleController {
         }
         return "无文章更新";
     }
-
     /**
      * 设置线程睡眠时间5-10秒，过快了要被封
      *
@@ -82,5 +81,11 @@ public class ArticleController {
             e.printStackTrace();
         }
         return new ArticleInfoDto();
+    }
+
+    @GetMapping("/detail")
+    public String  articleDetail(){
+        String articleContent = articleServiceImpl.findArticleDetail(346, 3);
+        return  articleContent;
     }
 }

@@ -86,6 +86,16 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     /**
+     * 查询文章详细内容
+     */
+    @Override
+    public String findArticleDetail(int articleId,int accountId) {
+        WechatArticle article = articleRepository.findByArticleIdAndAccountId(articleId, accountId);
+        String content = article.getArticleContent();
+        return  content;
+    }
+
+    /**
      * 保存文章信息
      *
      * @param article

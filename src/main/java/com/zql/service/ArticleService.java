@@ -7,4 +7,5 @@ import com.zql.dto.ArticleInfoDto;
  */
 public interface ArticleService {
     ArticleInfoDto saveLastArticleInfo(String account);
+    String findArticleDetail(int articleId,int accountId);
 }
