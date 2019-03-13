@@ -1,6 +1,7 @@
 package com.zql.utils;
 
 import com.zql.dto.IPEntity;
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.config.RequestConfig;
@@ -13,6 +14,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * Created by 张启磊 on 2019-3-9.
@@ -127,6 +129,44 @@ public class HTTPUtil {
             e.printStackTrace();
         }
         return document;
+    }
+
+
+    /**
+     * 获取图片输入流
+     * @param url
+     * @param ipEntity
+     * @return
+     */
+    public static InputStream getResponseInputStream(String url, IPEntity ipEntity) {
+        //创建httpclient实例
+        CloseableHttpClient httpClient = HttpClients.createDefault();
+        //创建httpGet实例
+        HttpGet httpGet = new HttpGet(url);
+        //设置代理
+        HttpHost proxy;
+        proxy = new HttpHost(ipEntity.getIp(), ipEntity.getPort());
+        //设置请求超时和读取超时时间，如果返回200则视为有效ip
+        RequestConfig requestConfig = RequestConfig
+                .custom()
+                .setProxy(proxy)
+                .setConnectTimeout(5000)//设置连接超时时间
+                .setConnectionRequestTimeout(5000) // 设置请求超时时间
+                .setSocketTimeout(5000)
+                .build();
+        httpGet.setHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:57.0) Gecko/20100101 Firefox/57.0");
+        CloseableHttpResponse httpResponse;
+        InputStream ips  = null;
+        try {
+            httpResponse = httpClient.execute(httpGet);
+            HttpEntity entity = httpResponse.getEntity();
+            ips = entity.getContent();
+        } catch (ClientProtocolException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return ips;
     }
 }
 

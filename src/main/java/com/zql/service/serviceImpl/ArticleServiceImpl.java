@@ -1,21 +1,24 @@
 package com.zql.service.serviceImpl;
 
+import com.zql.crawler.ArticleDetailCrawler;
 import com.zql.dataobject.WechatAccount;
 import com.zql.dataobject.WechatArticle;
-import com.zql.dto.ArticleInfoDto;
-import com.zql.dto.ElementDto;
-import com.zql.dto.MultiAppMsgItemInfo;
-import com.zql.dto.ResultDto;
+import com.zql.dto.*;
 import com.zql.repository.WechatAccountRepository;
 import com.zql.repository.WechatArticleRepository;
 import com.zql.service.ArticleService;
+import com.zql.utils.RandomUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,6 +38,8 @@ public class ArticleServiceImpl implements ArticleService {
     private WechatAccountRepository accountRepository;
     @Autowired
     private WechatArticleRepository articleRepository;
+    @Autowired
+    private ArticleDetailCrawler articleDetailCrawler;
     @Value("${public.urlHead}")
     private String urlHead;
     @Override
@@ -87,12 +92,54 @@ public class ArticleServiceImpl implements ArticleService {
 
     /**
      * 查询文章详细内容
+     * @param articleId
+     * @param accountId
+     * @return
      */
     @Override
     public String findArticleDetail(int articleId,int accountId) {
         WechatArticle article = articleRepository.findByArticleIdAndAccountId(articleId, accountId);
         String content = article.getArticleContent();
         return  content;
+    }
+
+
+    /**
+     * 根据url返回正文包含的图片url集合
+     * @param articleInfoDto
+     */
+    @Override
+    public List<ImageUrlDto> getLastArticleDetail(ArticleInfoDto  articleInfoDto) {
+        List<WechatArticle> articles = articleInfoDto.getArticles();
+        List<ImageUrlDto> list = new ArrayList();
+        for (WechatArticle article : articles) {
+            //避免请求过快，每个请求间隔10-15s
+            Thread thread = new Thread();
+            try {
+                thread.sleep(RandomUtil.randomInt());
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            Document doc = articleDetailCrawler.getDetail(article);
+            if (!Optional.ofNullable(doc).isPresent()){
+                return  new ArrayList();
+            }
+            //保存文章内容html
+            articleRepository.updateContentById(doc.toString(),article.getArticleId());
+            //获取正文内容，正文只有一个
+            Element element = doc.select(".rich_media_content").get(0);
+            //获取图片url
+            Elements imgUrls = element.getElementsByTag("img");
+            for (Element ele : imgUrls) {
+                //每个图片url都保存为一个dto
+                ImageUrlDto imageUrlDto = new ImageUrlDto();
+                //把articleId，accountId复制过去
+                BeanUtils.copyProperties(article,imageUrlDto);
+                imageUrlDto.setImgOurl(ele.toString());
+                list.add(imageUrlDto);
+            }
+        }
+        return list;
     }
 
     /**

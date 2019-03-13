@@ -8,11 +8,11 @@ import java.util.Random;
  */
 public class RandomUtil {
     /**
-     * 生成5000-1000的随机数
+     * 生成10000-15000的随机数
      * @return
      */
     public static Integer randomInt(){
         Random random = new Random();
-        return random.nextInt(5000) + 5000;
+        return random.nextInt(10000) + 5000;
     }
 }

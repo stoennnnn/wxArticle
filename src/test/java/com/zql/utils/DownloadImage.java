@@ -9,6 +9,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Optional;
 
 /**
  * Created by 张启磊 on 2019-3-13.
@@ -24,6 +25,9 @@ public class DownloadImage {
         String url = "https://mmbiz.qpic.cn/mmbiz_jpg/4MXV7svuTWIaq3k3iaB0iaE4QDicOfhm46DulNKNeQicv4BEDpl2RdFgpaNy38adYcDuNTo5tgP98HFmwibiaP6ibkcvQ/640?wx_fmt=jpeg";
         IPEntity ipEntity = new IPEntity("58.220.95.107", 8080, 1);
         InputStream ips = HTTPUtil.getResponseInputStream(url, ipEntity);
+        if(!Optional.ofNullable(ips).isPresent()){
+            return;
+        }
         //一次读取的长度
         byte[] data= new byte[1024];
         int len=0;
@@ -40,6 +44,5 @@ public class DownloadImage {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 }

@@ -7,15 +7,18 @@ import com.zql.repository.WechatArticleRepository;
 import com.zql.utils.HTTPUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import javax.print.Doc;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 /**
- * 获取文章具体信息
+ * 获取文章具体信息，
  * Created by 张启磊 on 2019-3-12.
  */
 @Component
@@ -27,19 +30,21 @@ public class ArticleDetailCrawler {
     private int port;
     @Value("${public.type}")
     private int type;
-    @Autowired
-    private WechatArticleRepository repository;
-    public void getDetail(ArticleInfoDto articleInfoDto){
+
+    /**
+     * 根据文章url获取具体内容
+     * @param article
+     * @return
+     */
+    public Document getDetail(WechatArticle article) {
         IPEntity ipEntity = new IPEntity(ip, port, type);
-        List<WechatArticle> articles = articleInfoDto.getArticles();
-        if (!Optional.ofNullable(articles).isPresent()){
+        if (!Optional.ofNullable(article).isPresent()) {
             log.error("【保存文章内容】 文章的url不存在");
-            return;
+            return new Document(null);
         }
-        for (WechatArticle article : articles) {
-            Document doc = HTTPUtil.getResponseContent(article.getArticleContentUrl(), ipEntity);
-            doc.removeAttr("script");
-            int i = repository.saveContentById(doc.toString(), article.getArticleId());
-        }
+        Document doc = HTTPUtil.getResponseContent(article.getArticleContentUrl(), ipEntity);
+        //把doc的<script>标签全部去掉
+        doc.getElementsByTag("script").remove();
+        return doc;
     }
 }

@@ -21,5 +21,5 @@ public interface WechatArticleRepository extends JpaRepository<WechatArticle,Int
     @Transactional
     @Modifying
     @Query(value = "update WechatArticle a set articleContent=?1  where a.articleId =?2")
-    int saveContentById(String articleContent, Integer articleId);
+    int updateContentById(String articleContent, Integer articleId);
 }
