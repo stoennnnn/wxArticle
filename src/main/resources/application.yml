@@ -1,5 +1,5 @@
 server:
-  port: 9999
+  port: 3333
 #配置数据库
 spring:
   datasource:
@@ -33,7 +33,7 @@ spring:
     host: smtp.qq.com
     username: 2672575920@qq.com
     #授权码，不是密码，从邮箱方面找
-    password: apnhbmpzqxaxebbd
+    password: pnqilnqjltcdebgd
     properties:
       mail:
         stmp:

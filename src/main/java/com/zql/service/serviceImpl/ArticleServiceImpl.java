@@ -132,10 +132,11 @@ public class ArticleServiceImpl implements ArticleService {
             Elements imgUrls = element.getElementsByTag("img");
             for (Element ele : imgUrls) {
                 //每个图片url都保存为一个dto
+                String imgOldUrl = ele.attr("data-src");
                 ImageUrlDto imageUrlDto = new ImageUrlDto();
                 //把articleId，accountId复制过去
                 BeanUtils.copyProperties(article,imageUrlDto);
-                imageUrlDto.setImgOurl(ele.toString());
+                imageUrlDto.setImgOurl(imgOldUrl);
                 list.add(imageUrlDto);
             }
         }

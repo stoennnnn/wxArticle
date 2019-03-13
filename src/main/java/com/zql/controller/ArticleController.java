@@ -11,7 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.activemq.command.ActiveMQQueue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -55,11 +54,11 @@ public class ArticleController {
             if (Optional.ofNullable(articleInfoDto).isPresent()) {
                 //添加到用于发送邮件的list
                 list.add(articleInfoDto);
-                //
+                //把图片的url添加到队列
                 List<ImageUrlDto> imageUrls = articleServiceImpl.getLastArticleDetail(articleInfoDto);
                 Destination destination = new ActiveMQQueue("imageUrlQueue");
                 //先把list转为json
-                final String str = JsonUtil.toJson(list);
+                final String str = JsonUtil.toJson(imageUrls);
                 //每篇文章发送一个消息
                 producer.sendMessage(destination, str);
             }
