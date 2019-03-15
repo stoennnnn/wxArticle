@@ -3,7 +3,6 @@ package com.zql.service;
 import com.zql.dto.ArticleInfoDto;
 import com.zql.dto.ImageUrlDto;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -11,6 +10,6 @@ import java.util.List;
  */
 public interface ArticleService {
     ArticleInfoDto saveLastArticleInfo(String account);
-    String findArticleDetail(int articleId,int accountId);
+    String findArticleDetail(int articleId);
     List<ImageUrlDto> getLastArticleDetail(ArticleInfoDto articleInfoDto);
 }

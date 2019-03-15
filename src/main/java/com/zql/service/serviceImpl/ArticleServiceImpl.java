@@ -97,8 +97,8 @@ public class ArticleServiceImpl implements ArticleService {
      * @return
      */
     @Override
-    public String findArticleDetail(int articleId,int accountId) {
-        WechatArticle article = articleRepository.findByArticleIdAndAccountId(articleId, accountId);
+    public String findArticleDetail(int articleId) {
+        WechatArticle article = articleRepository.findByArticleId(articleId);
         String content = article.getArticleContent();
         return  content;
     }

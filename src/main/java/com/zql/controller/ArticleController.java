@@ -102,7 +102,7 @@ public class ArticleController {
      */
     @GetMapping("/detail")
     public String  articleDetail(){
-        String articleContent = articleServiceImpl.findArticleDetail(346, 3);
+        String articleContent = articleServiceImpl.findArticleDetail(346);
         return  articleContent;
     }
 

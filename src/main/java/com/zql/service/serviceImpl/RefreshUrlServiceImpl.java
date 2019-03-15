@@ -60,7 +60,7 @@ public class RefreshUrlServiceImpl implements RefreshUrlService {
         String nickName = optional.get().getAccountNickname();
         String accountNo = optional.get().getAccountNumber();
         //通过accountId和articleId获取title
-        WechatArticle article = articleRepository.findByArticleIdAndAccountId(articleId, accountId);
+        WechatArticle article = articleRepository.findByArticleId(articleId);
         if (!Optional.ofNullable(article).isPresent()) {
             log.error("【通过accountId和articleId未获取到title！】：accoutId={}，articleId={}", accountId,articleId);
             resultMap.put("result", "false");

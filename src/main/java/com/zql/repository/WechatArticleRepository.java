@@ -16,7 +16,7 @@ public interface WechatArticleRepository extends JpaRepository<WechatArticle,Int
     @Query(value="select a from WechatArticle a where a.accountId =?1 order by a.articleDatetime desc")
     List<WechatArticle> findByAccountId(Integer accountId);
     //查找该公众号的特定文章
-    WechatArticle findByArticleIdAndAccountId(Integer article, Integer accountId);
+    WechatArticle findByArticleId(Integer articleId);
     //保存文章内容信息
     @Transactional
     @Modifying
