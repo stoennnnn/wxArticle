@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.zql.dto.ArticleInfoDto;
 import com.zql.dto.ElementDto;
+import com.zql.dto.ImageUrlDto;
 import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.Type;
@@ -50,4 +51,18 @@ public class JsonUtil {
         articleInfoDtos= gson.fromJson(str, type);
         return articleInfoDtos;
     }
+
+    /**
+     * json转list
+     * @param str
+     * @return
+     */
+    public static List<ImageUrlDto> toImageUrlDtos (String str){
+        Gson gson = new Gson();
+        List<ImageUrlDto> imageUrlDtos = new ArrayList<>();
+        Type type = new TypeToken<List<ImageUrlDto>>() {}.getType();
+        imageUrlDtos= gson.fromJson(str, type);
+        return imageUrlDtos;
+    }
+
 }

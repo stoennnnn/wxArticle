@@ -54,7 +54,8 @@ public class ArticleController {
             if (Optional.ofNullable(articleInfoDto).isPresent()) {
                 //添加到用于发送邮件的list
                 list.add(articleInfoDto);
-                //把图片的url添加到队列
+                //网络还不通，暂时不通过队列下载图片，从数据库取
+               //把图片的url添加到队列
                 List<ImageUrlDto> imageUrls = articleServiceImpl.getLastArticleDetail(articleInfoDto);
                 Destination destination = new ActiveMQQueue("imageUrlQueue");
                 //先把list转为json

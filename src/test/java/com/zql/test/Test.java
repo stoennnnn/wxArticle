@@ -21,11 +21,13 @@ public class Test {
     //重新格式化文章的正文，秩取中文内容
     @org.junit.Test
     public  void  test(){
-        WechatArticle article = repository.findByArticleId(392);
-        Document doc = Jsoup.parse(article.getArticleContent());
-        Elements select = doc.select(".rich_media_content");
-        String s = select.get(0).toString();
-        repository.updateContentById(s,392);
+        for (int i = 400; i < 408; i++) {
+            WechatArticle article = repository.findByArticleId(i);
+            Document doc = Jsoup.parse(article.getArticleContent());
+            Elements select = doc.select(".rich_media_content");
+            String s = select.get(0).toString();
+            repository.updateContentById(s,i);
+        }
 
 
     }

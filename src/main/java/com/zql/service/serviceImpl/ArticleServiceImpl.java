@@ -4,6 +4,7 @@ import com.zql.crawler.ArticleDetailCrawler;
 import com.zql.dataobject.WechatAccount;
 import com.zql.dataobject.WechatArticle;
 import com.zql.dto.*;
+import com.zql.repository.ArticleImageRepository;
 import com.zql.repository.WechatAccountRepository;
 import com.zql.repository.WechatArticleRepository;
 import com.zql.service.ArticleService;
@@ -40,6 +41,8 @@ public class ArticleServiceImpl implements ArticleService {
     private WechatArticleRepository articleRepository;
     @Autowired
     private ArticleDetailCrawler articleDetailCrawler;
+    @Autowired
+    private ArticleImageRepository imageRepository;
     @Value("${public.urlHead}")
     private String urlHead;
     @Override
@@ -93,7 +96,6 @@ public class ArticleServiceImpl implements ArticleService {
     /**
      * 查询文章详细内容
      * @param articleId
-     * @param accountId
      * @return
      */
     @Override
@@ -121,24 +123,29 @@ public class ArticleServiceImpl implements ArticleService {
                 e.printStackTrace();
             }
             Document doc = articleDetailCrawler.getDetail(article);
-            if (!Optional.ofNullable(doc).isPresent()){
-                return  new ArrayList();
+            if (!Optional.ofNullable(doc).isPresent()) {
+                return new ArrayList();
             }
-            //保存文章内容html
-            articleRepository.updateContentById(doc.toString(),article.getArticleId());
             //获取正文内容，正文只有一个
-            Element element = doc.select(".rich_media_content").get(0);
+            Element elementContent = doc.select(".rich_media_content").get(0);
             //获取图片url
-            Elements imgUrls = element.getElementsByTag("img");
-            for (Element ele : imgUrls) {
+            Elements imgUrls = elementContent.getElementsByTag("img");
+            for (int i = 0; i < imgUrls.size(); i++) {
+                //获取老的url
+                String imgOldUrl = imgUrls.get(i).attr("data-src");
+//                //把data_src属性删除
+//                elementContent.getElementsByTag("img").get(i).removeAttr("data-src");
+                //增加src属性并把oldurl添加进去，图片就能正常显示
+                elementContent.getElementsByTag("img").get(i).select("img").attr("src", imgOldUrl);
                 //每个图片url都保存为一个dto
-                String imgOldUrl = ele.attr("data-src");
                 ImageUrlDto imageUrlDto = new ImageUrlDto();
                 //把articleId，accountId复制过去
-                BeanUtils.copyProperties(article,imageUrlDto);
+                BeanUtils.copyProperties(article, imageUrlDto);
                 imageUrlDto.setImgOurl(imgOldUrl);
                 list.add(imageUrlDto);
             }
+            //保存正文内容和格式
+            articleRepository.updateContentById(elementContent.toString(), article.getArticleId());
         }
         return list;
     }
