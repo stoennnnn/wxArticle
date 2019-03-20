@@ -24,6 +24,6 @@ public class WechatArticle {
     private String articleDigest;
     private String articleContentUrl;
     private String articleCoverUrl;
-    private String articleContent;
+ //   private String articleContent;
     private Long articleDatetime;
 }

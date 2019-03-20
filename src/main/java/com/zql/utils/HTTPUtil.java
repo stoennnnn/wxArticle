@@ -7,6 +7,9 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.ByteArrayEntity;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
@@ -15,6 +18,9 @@ import org.jsoup.nodes.Document;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
+import java.util.Optional;
 
 /**
  * Created by 张启磊 on 2019-3-9.
@@ -168,5 +174,46 @@ public class HTTPUtil {
         }
         return ips;
     }
+
+    /**
+     * httpclient post发送json
+     * @param url
+     * @param jsonString
+     */
+    public static String setHttpPost(String url, String jsonString) {
+        // 创建Http Post请求
+        HttpPost httpPost = new HttpPost(url);
+        httpPost.setHeader("Content-Type", "application/x-www-form-urlencoded");
+
+        jsonString = JsonUtil.toJson(jsonString);
+        CloseableHttpClient httpClient = HttpClients.createDefault();
+        HttpPost post = new HttpPost(url);
+        // 构造消息头
+        post.setHeader("Content-Type", "application/x-www-form-urlencoded");
+        String s = "";
+        CloseableHttpResponse response;
+        try {
+            // 构建消息实体
+            StringEntity entity = new StringEntity(jsonString.toString(), Charset.forName("UTF-8"));
+            entity.setContentEncoding("UTF-8");
+            // 发送Json格式的数据请求
+            entity.setContentType("application/json");
+            post.setEntity(entity);
+            post.setEntity(new ByteArrayEntity(jsonString.getBytes("utf-8")));
+             response = httpClient.execute(post);
+            if (Optional.ofNullable(response).isPresent() && response.getStatusLine().getStatusCode() == 200) {
+                System.out.println("yes");
+                s = EntityUtils.toString(response.getEntity());
+            }
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        } catch (ClientProtocolException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return s;
+    }
+
 }
 

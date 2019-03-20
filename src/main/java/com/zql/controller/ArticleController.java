@@ -1,21 +1,20 @@
 package com.zql.controller;
 
+import com.zql.dataobject.ArticleContent;
 import com.zql.dto.ArticleInfoDto;
-import com.zql.dto.ImageUrlDto;
 import com.zql.mail.SendMail;
 import com.zql.mq.Producer;
 import com.zql.service.serviceImpl.ArticleServiceImpl;
 import com.zql.utils.JsonUtil;
+import com.zql.utils.JsoupUtil;
 import com.zql.utils.RandomUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.activemq.command.ActiveMQQueue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.jms.Destination;
 import javax.mail.MessagingException;
 import java.util.ArrayList;
 import java.util.List;
@@ -56,12 +55,20 @@ public class ArticleController {
                 list.add(articleInfoDto);
                 //网络还不通，暂时不通过队列下载图片，从数据库取
                //把图片的url添加到队列
-                List<ImageUrlDto> imageUrls = articleServiceImpl.getLastArticleDetail(articleInfoDto);
-                Destination destination = new ActiveMQQueue("imageUrlQueue");
+              //  List<ImageUrlDto> imageUrls = articleServiceImpl.getLastArticleDetail(articleInfoDto);
+                //直接把正文内容传到云服务器
+                List<ArticleContent> articleContents = articleServiceImpl.getLastArticleDetail(articleInfoDto);
+                if (articleContents.size()==0){
+                    log.error("【ArticleController】没有解析到正文内容");
+                    continue;
+                }
+                //Destination destination = new ActiveMQQueue("imageUrlQueue");
                 //先把list转为json
-                final String str = JsonUtil.toJson(imageUrls);
-                //每篇文章发送一个消息
-                producer.sendMessage(destination, str);
+                final String str = JsonUtil.toJson(articleContents);
+                //通过jsoup发送post请求提交数据
+                JsoupUtil.setHttpPost("http://localhost:2222/image/geturls","articleContents",str);
+                //每篇文章发送一个消息;
+               // producer.sendMessage(destination, str);
             }
         }
 

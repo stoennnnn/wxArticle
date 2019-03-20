@@ -1,5 +1,6 @@
 server:
   port: 3333
+  connection-timeout: 60000
 #配置数据库
 spring:
   datasource:

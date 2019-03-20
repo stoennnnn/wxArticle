@@ -1,10 +1,14 @@
 package com.zql.service.serviceImpl;
 
 import com.zql.crawler.ArticleDetailCrawler;
+import com.zql.dataobject.ArticleContent;
 import com.zql.dataobject.WechatAccount;
 import com.zql.dataobject.WechatArticle;
-import com.zql.dto.*;
-import com.zql.repository.ArticleImageRepository;
+import com.zql.dto.ArticleInfoDto;
+import com.zql.dto.ElementDto;
+import com.zql.dto.MultiAppMsgItemInfo;
+import com.zql.dto.ResultDto;
+import com.zql.repository.ArticleContentRepository;
 import com.zql.repository.WechatAccountRepository;
 import com.zql.repository.WechatArticleRepository;
 import com.zql.service.ArticleService;
@@ -42,7 +46,7 @@ public class ArticleServiceImpl implements ArticleService {
     @Autowired
     private ArticleDetailCrawler articleDetailCrawler;
     @Autowired
-    private ArticleImageRepository imageRepository;
+    private ArticleContentRepository articleContentRepository;
     @Value("${public.urlHead}")
     private String urlHead;
     @Override
@@ -100,20 +104,25 @@ public class ArticleServiceImpl implements ArticleService {
      */
     @Override
     public String findArticleDetail(int articleId) {
-        WechatArticle article = articleRepository.findByArticleId(articleId);
-        String content = article.getArticleContent();
-        return  content;
+        Optional<ArticleContent> articleContent = articleContentRepository.findById(articleId);
+        if(!articleContent.isPresent()){
+            String content = articleContent.get().getArticleContent();
+            return  content;
+        }else
+            return "false";
     }
 
 
     /**
-     * 根据url返回正文包含的图片url集合
+     * 根据url返回正文包含的图片url集合*
+     * 根据url返回正文
      * @param articleInfoDto
      */
     @Override
-    public List<ImageUrlDto> getLastArticleDetail(ArticleInfoDto  articleInfoDto) {
+    public  List<ArticleContent> getLastArticleDetail(ArticleInfoDto  articleInfoDto) {
         List<WechatArticle> articles = articleInfoDto.getArticles();
-        List<ImageUrlDto> list = new ArrayList();
+       // List<ImageUrlDto> list = new ArrayList();
+        List<ArticleContent> list = new ArrayList();
         for (WechatArticle article : articles) {
             //避免请求过快，每个请求间隔10-15s
             Thread thread = new Thread();
@@ -127,28 +136,41 @@ public class ArticleServiceImpl implements ArticleService {
                 return new ArrayList();
             }
             //获取正文内容，正文只有一个
-            Element elementContent = doc.select(".rich_media_content").get(0);
-            //获取图片url
-            Elements imgUrls = elementContent.getElementsByTag("img");
-            for (int i = 0; i < imgUrls.size(); i++) {
-                //获取老的url
-                String imgOldUrl = imgUrls.get(i).attr("data-src");
-//                //把data_src属性删除
-//                elementContent.getElementsByTag("img").get(i).removeAttr("data-src");
-                //增加src属性并把oldurl添加进去，图片就能正常显示
-                elementContent.getElementsByTag("img").get(i).select("img").attr("src", imgOldUrl);
-                //每个图片url都保存为一个dto
-                ImageUrlDto imageUrlDto = new ImageUrlDto();
-                //把articleId，accountId复制过去
-                BeanUtils.copyProperties(article, imageUrlDto);
-                imageUrlDto.setImgOurl(imgOldUrl);
-                list.add(imageUrlDto);
+            Elements elements = doc.select(".rich_media_content");
+            if (null==elements&&elements.size()==0){
+                return   new ArrayList();
             }
-            //保存正文内容和格式
-            articleRepository.updateContentById(elementContent.toString(), article.getArticleId());
+            Element elementContent=elements.get(0);
+            ArticleContent articleContent = new ArticleContent();
+            //把articleId,accountId复制过去
+            BeanUtils.copyProperties(article,articleContent);
+            articleContent.setArticleContent(elementContent.toString());
+            list.add(articleContent);
         }
-        return list;
+        return  list;
     }
+            //获取图片url
+//            Elements imgUrls = elementContent.getElementsByTag("img");
+//            for (int i = 0; i < imgUrls.size(); i++) {
+//                //获取老的url
+//                String imgOldUrl = imgUrls.get(i).attr("data-src");
+            //把data_src属性删除
+            //  elementContent.getElementsByTag("img").get(i).removeAttr("data-src");
+            //增加src属性并把oldurl添加进去，图片就能正常显示:
+            //事实证明还是要被微信封
+            //elementContent.getElementsByTag("img").get(i).select("img").attr("src", imgOldUrl);
+            //每个图片url都保存为一个dto
+//                ImageUrlDto imageUrlDto = new ImageUrlDto();
+//                //把articleId，accountId复制过去
+//                BeanUtils.copyProperties(article, imageUrlDto);
+//                imageUrlDto.setImgOurl(imgOldUrl);
+//                list.add(imageUrlDto);
+//            }
+//            //保存正文内容和格式
+//            //todo 这里不保存，发给云服务器保存正文的同时下载图片
+//            //articleRepository.updateContentById(elementContent.toString(), article.getArticleId());
+//        }
+//        return list;
 
     /**
      * 保存文章信息
@@ -156,8 +178,8 @@ public class ArticleServiceImpl implements ArticleService {
      * @param article
      * @param elementDto
      */
-    @Transactional
-    public void saveOneArticle(WechatArticle article, ElementDto elementDto,ArticleInfoDto articleInfoDto) {
+        @Transactional
+        public void saveOneArticle(WechatArticle article, ElementDto elementDto,ArticleInfoDto articleInfoDto) {
         //标题，文章链接，描述，封面，更新时间
         String title = elementDto.getAppMsgExtInfo().title;
         //需要处理contentUrl
