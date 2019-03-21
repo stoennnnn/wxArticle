@@ -17,7 +17,7 @@ import java.io.IOException;
 public class HttpClientPostTest {
     @org.junit.Test
     public void test(){
-        Connection connect = Jsoup.connect("http://47.101.207.245:2222/image/geturls");
+        Connection connect = Jsoup.connect("http://47.101.207.245:8080/image/geturls");
         connect.data("articleContents", "zhangsan");
         try {
             Document doc = connect.post();
